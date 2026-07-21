@@ -122,7 +122,7 @@ export function AddressForm({ onSubmit, defaultValues }: AddressFormProps) {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors"
+        className="w-full bg-[#f5a623] text-white py-2 rounded-md font-semibold hover:bg-[#e0961f] transition-colors"
       >
         Salvar Endereço
       </button>

@@ -39,9 +39,9 @@ export const useCart = create<CartStore>()(
           if (item.unidadeMedida === 'METRO') {
             const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
             const totalMeters = parseFloat(newQuantity) * metragemPorPeca;
-            newPrecoTotal = String(parseFloat(item.precoUnitario) * totalMeters);
+            newPrecoTotal = (parseFloat(item.precoUnitario) * totalMeters).toFixed(2);
           } else {
-            newPrecoTotal = String(parseFloat(item.precoUnitario) * parseFloat(newQuantity));
+            newPrecoTotal = (parseFloat(item.precoUnitario) * parseFloat(newQuantity)).toFixed(2);
           }
 
           newCart.itens[existingItemIndex] = {
@@ -55,9 +55,9 @@ export const useCart = create<CartStore>()(
           if (item.unidadeMedida === 'METRO') {
             const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
             const totalMeters = parseFloat(item.quantidade) * metragemPorPeca;
-            precoTotal = String(parseFloat(item.precoUnitario) * totalMeters);
+            precoTotal = (parseFloat(item.precoUnitario) * totalMeters).toFixed(2);
           } else {
-            precoTotal = String(parseFloat(item.precoUnitario) * parseFloat(item.quantidade));
+            precoTotal = (parseFloat(item.precoUnitario) * parseFloat(item.quantidade)).toFixed(2);
           }
 
           newCart.itens.push({
@@ -72,9 +72,9 @@ export const useCart = create<CartStore>()(
           (sum, item) => sum + parseFloat(item.quantidade),
           0
         );
-        newCart.subtotal = String(
-          newCart.itens.reduce((sum, item) => sum + parseFloat(item.precoTotal), 0)
-        );
+        newCart.subtotal = newCart.itens
+          .reduce((sum, item) => sum + parseFloat(item.precoTotal), 0)
+          .toFixed(2);
 
         return { cart: newCart };
       }),
@@ -89,9 +89,9 @@ export const useCart = create<CartStore>()(
           (sum, item) => sum + parseFloat(item.quantidade),
           0
         );
-        newCart.subtotal = String(
-          newCart.itens.reduce((sum, item) => sum + parseFloat(item.precoTotal), 0)
-        );
+        newCart.subtotal = newCart.itens
+          .reduce((sum, item) => sum + parseFloat(item.precoTotal), 0)
+          .toFixed(2);
 
         return { cart: newCart };
       }),
@@ -109,9 +109,9 @@ export const useCart = create<CartStore>()(
           if (item.unidadeMedida === 'METRO') {
             const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
             const totalMeters = parseFloat(newQuantity) * metragemPorPeca;
-            newPrecoTotal = String(parseFloat(item.precoUnitario) * totalMeters);
+            newPrecoTotal = (parseFloat(item.precoUnitario) * totalMeters).toFixed(2);
           } else {
-            newPrecoTotal = String(parseFloat(item.precoUnitario) * parseFloat(newQuantity));
+            newPrecoTotal = (parseFloat(item.precoUnitario) * parseFloat(newQuantity)).toFixed(2);
           }
 
           newCart.itens[itemIndex] = {
@@ -124,9 +124,9 @@ export const useCart = create<CartStore>()(
             (sum, item) => sum + parseFloat(item.quantidade),
             0
           );
-          newCart.subtotal = String(
-            newCart.itens.reduce((sum, item) => sum + parseFloat(item.precoTotal), 0)
-          );
+          newCart.subtotal = newCart.itens
+            .reduce((sum, item) => sum + parseFloat(item.precoTotal), 0)
+            .toFixed(2);
         }
 
         return { cart: newCart };

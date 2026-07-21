@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-
 interface FiltersProps {
+  filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
 }
 
@@ -17,51 +16,40 @@ export interface FilterState {
   ordenacao: string;
 }
 
-export function Filters({ onFilterChange }: FiltersProps) {
-  const [filters, setFilters] = useState<FilterState>({
-    busca: '',
-    categoriaSlug: '',
-    cor: '',
-    unidadeMedida: '',
-    precoMin: '',
-    precoMax: '',
-    somenteDisponiveis: false,
-    ordenacao: 'relevancia',
-  });
+const inputClasses =
+  'w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#f5a623] focus:outline-none focus:ring-1 focus:ring-[#f5a623]';
 
+export function Filters({ filters, onFilterChange }: FiltersProps) {
   const handleFilterChange = (key: keyof FilterState, value: string | boolean) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    onFilterChange({ ...filters, [key]: value });
+  };
+
+  const handleClearFilters = () => {
+    onFilterChange({
+      busca: '',
+      categoriaSlug: '',
+      cor: '',
+      unidadeMedida: '',
+      precoMin: '',
+      precoMax: '',
+      somenteDisponiveis: false,
+      ordenacao: filters.ordenacao,
+    });
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold mb-4">Filtros</h3>
-      
-      {/* Busca */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Busca
-        </label>
-        <input
-          type="text"
-          value={filters.busca}
-          onChange={(e) => handleFilterChange('busca', e.target.value)}
-          placeholder="Buscar produtos..."
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
-        />
-      </div>
+    <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
+      <h3 className="text-lg font-semibold mb-5">Filtros</h3>
 
-      {/* Categoria */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      {/* Categoria — filtro mais usado, com leve destaque */}
+      <div className="mb-6 pb-5 border-b border-gray-200">
+        <label className="block text-sm font-semibold text-gray-800 mb-2">
           Categoria
         </label>
         <select
           value={filters.categoriaSlug}
           onChange={(e) => handleFilterChange('categoriaSlug', e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
+          className={`${inputClasses} py-2.5 bg-white`}
         >
           <option value="">Todas</option>
           <option value="algodao">Algodão</option>
@@ -71,8 +59,22 @@ export function Filters({ onFilterChange }: FiltersProps) {
         </select>
       </div>
 
+      {/* Busca */}
+      <div className="mb-5">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Busca
+        </label>
+        <input
+          type="text"
+          value={filters.busca}
+          onChange={(e) => handleFilterChange('busca', e.target.value)}
+          placeholder="Buscar produtos..."
+          className={inputClasses}
+        />
+      </div>
+
       {/* Cor */}
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Cor
         </label>
@@ -81,19 +83,19 @@ export function Filters({ onFilterChange }: FiltersProps) {
           value={filters.cor}
           onChange={(e) => handleFilterChange('cor', e.target.value)}
           placeholder="Ex: azul, vermelho..."
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
+          className={inputClasses}
         />
       </div>
 
       {/* Unidade de Medida */}
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Unidade de Medida
         </label>
         <select
           value={filters.unidadeMedida}
           onChange={(e) => handleFilterChange('unidadeMedida', e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
+          className={inputClasses}
         >
           <option value="">Todas</option>
           <option value="metro">Metro</option>
@@ -103,7 +105,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
       </div>
 
       {/* Preço */}
-      <div className="mb-4">
+      <div className="mb-5">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Faixa de Preço
         </label>
@@ -113,61 +115,34 @@ export function Filters({ onFilterChange }: FiltersProps) {
             value={filters.precoMin}
             onChange={(e) => handleFilterChange('precoMin', e.target.value)}
             placeholder="Mín"
-            className="w-1/2 rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
+            className={`w-1/2 ${inputClasses}`}
           />
           <input
             type="number"
             value={filters.precoMax}
             onChange={(e) => handleFilterChange('precoMax', e.target.value)}
             placeholder="Máx"
-            className="w-1/2 rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
+            className={`w-1/2 ${inputClasses}`}
           />
         </div>
       </div>
 
       {/* Somente Disponíveis */}
-      <div className="mb-4">
+      <div className="mb-6">
         <label className="flex items-center">
           <input
             type="checkbox"
             checked={filters.somenteDisponiveis}
             onChange={(e) => handleFilterChange('somenteDisponiveis', e.target.checked)}
-            className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="mr-2 h-4 w-4 accent-[#f5a623] border-gray-300 rounded"
           />
           <span className="text-sm text-gray-700">Somente disponíveis</span>
         </label>
       </div>
 
-      {/* Ordenação */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Ordenação
-        </label>
-        <select
-          value={filters.ordenacao}
-          onChange={(e) => handleFilterChange('ordenacao', e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
-        >
-          <option value="relevancia">Relevância</option>
-          <option value="preco_asc">Preço: Menor para Maior</option>
-          <option value="preco_desc">Preço: Maior para Menor</option>
-          <option value="nome_asc">Nome: A-Z</option>
-          <option value="nome_desc">Nome: Z-A</option>
-        </select>
-      </div>
-
       <button
-        onClick={() => setFilters({
-          busca: '',
-          categoriaSlug: '',
-          cor: '',
-          unidadeMedida: '',
-          precoMin: '',
-          precoMax: '',
-          somenteDisponiveis: false,
-          ordenacao: 'relevancia',
-        })}
-        className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors"
+        onClick={handleClearFilters}
+        className="w-full border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100 hover:text-gray-900 transition-colors"
       >
         Limpar Filtros
       </button>

@@ -102,7 +102,7 @@ export default function CheckoutPage() {
                         key={address.id}
                         className={`flex items-center gap-2 p-3 border rounded-lg cursor-pointer ${
                           selectedAddress === address.id
-                            ? 'border-blue-600 bg-blue-50'
+                            ? 'border-[#f5a623] bg-orange-50'
                             : 'border-gray-200'
                         }`}
                       >
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
                           value={address.id}
                           checked={selectedAddress === address.id}
                           onChange={(e) => setSelectedAddress(e.target.value)}
-                          className="h-4 w-4 text-blue-600"
+                          className="h-4 w-4 accent-[#f5a623]"
                         />
                         <div>
                           <p className="font-medium">{address.rua}, {address.numero}</p>
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
                         key={index}
                         className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-colors ${
                           selectedFreight?.metodo === option.metodo
-                            ? 'border-blue-600 bg-blue-50'
+                            ? 'border-[#f5a623] bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
                             value={option.metodo}
                             checked={selectedFreight?.metodo === option.metodo}
                             onChange={(e) => setSelectedFreight(option)}
-                            className="h-4 w-4 text-blue-600"
+                            className="h-4 w-4 accent-[#f5a623]"
                           />
                           <div>
                             <p className="font-medium">{option.metodo}</p>
@@ -184,7 +184,7 @@ export default function CheckoutPage() {
                             value={method.id}
                             checked={selectedPayment === method.id}
                             onChange={(e) => setSelectedPayment(e.target.value)}
-                            className="h-4 w-4 text-blue-600"
+                            className="h-4 w-4 accent-[#f5a623]"
                           />
                           <span className="font-medium">{method.name}</span>
                         </div>
@@ -235,10 +235,10 @@ export default function CheckoutPage() {
                     <span>Total</span>
                     <span>
                       R$ {selectedFreight
-                        ? String(
+                        ? (
                             parseFloat(cart.subtotal) +
                             parseFloat(selectedFreight.valor || '0')
-                          )
+                          ).toFixed(2)
                         : cart.subtotal}
                     </span>
                   </div>
@@ -247,7 +247,7 @@ export default function CheckoutPage() {
                 <button
                   onClick={handleCompleteOrder}
                   disabled={!selectedFreight || !selectedPayment || !selectedAddress || orderMutation.isPending}
-                  className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#f5a623] text-white py-3 rounded-md font-semibold hover:bg-[#e0961f] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {orderMutation.isPending ? 'Processando...' : 'Finalizar Pedido'}
                 </button>

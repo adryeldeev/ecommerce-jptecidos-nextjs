@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/features/account/application/use-auth';
+import { useCart } from '@/features/cart/application/use-cart';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,6 +14,8 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isAuthenticated, logout } = useAuth();
+  const cart = useCart((state) => state.cart);
+  const cartItemCount = Math.round(cart?.quantidadeTotal ?? 0);
   const isHomePage = pathname === '/';
 
   useEffect(() => {
@@ -158,9 +161,9 @@ export function Header() {
                 </div>
               )}
             </div>
-            <Link 
-              href="/carrinho" 
-              className={`${shouldShowScrolled ? 'text-[#DD8A05] hover:text-[#c47a04]' : 'text-white hover:text-gray-200'} p-1`}
+            <Link
+              href="/carrinho"
+              className={`relative ${shouldShowScrolled ? 'text-[#DD8A05] hover:text-[#c47a04]' : 'text-white hover:text-gray-200'} p-1`}
             >
               <svg
                 className="h-5 w-5 md:h-6 md:w-6"
@@ -175,6 +178,11 @@ export function Header() {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[#f5a623] px-1 text-[10px] font-semibold leading-none text-white">
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
+                </span>
+              )}
             </Link>
 
             {/* Mobile menu button */}
