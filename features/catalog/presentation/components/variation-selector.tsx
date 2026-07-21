@@ -14,7 +14,7 @@ export function VariationSelector({ variations, onVariationSelect }: VariationSe
   // Agrupar variações por cor
   const colors = Array.from(new Set(variations.map((v) => v.cor)));
   // Agrupar variações por largura
-  const widths = Array.from(new Set(variations.map((v) => v.largura).filter(Boolean))) as string[];
+  const widths = Array.from(new Set(variations.map((v) => v.largura).filter((w): w is string => w !== undefined)));
 
   const handleColorSelect = (color: string) => {
     const variation = variations.find((v) => v.cor === color);

@@ -1,13 +1,16 @@
 export interface CartItem {
   id: string;
-  produtoVariacaoId: string;
+  produtoVariacaoId?: string;
   produtoId: string;
   produtoTitulo: string;
   produtoImagem?: string;
-  variacao: {
+  unidadeMedida?: 'METRO' | 'KG' | 'UNIDADE';
+  variacao?: {
     cor: string;
     largura?: string;
     sku: string;
+    metragemPorPeca?: string;
+    estoque?: string;
   };
   quantidade: string;
   precoUnitario: string;

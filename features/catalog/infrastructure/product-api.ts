@@ -13,6 +13,8 @@ export const productApi = {
     precoMax?: string;
     somenteDisponiveis?: boolean;
     ordenacao?: string;
+    maisProcurado?: boolean;
+    lancamento?: boolean;
   }) => {
     const queryParams = new URLSearchParams();
     
@@ -26,6 +28,8 @@ export const productApi = {
     if (params.precoMax) queryParams.append('precoMax', params.precoMax);
     if (params.somenteDisponiveis !== undefined) queryParams.append('somenteDisponiveis', params.somenteDisponiveis.toString());
     if (params.ordenacao) queryParams.append('ordenacao', params.ordenacao);
+    if (params.maisProcurado !== undefined) queryParams.append('maisProcurado', params.maisProcurado.toString());
+    if (params.lancamento !== undefined) queryParams.append('lancamento', params.lancamento.toString());
 
     const queryString = queryParams.toString();
     const endpoint = `/catalogo/produtos${queryString ? `?${queryString}` : ''}`;

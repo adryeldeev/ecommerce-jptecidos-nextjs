@@ -35,9 +35,14 @@ export const useCart = create<CartStore>()(
           const newQuantity = String(
             parseFloat(existingItem.quantidade) + parseFloat(item.quantidade)
           );
-          const newPrecoTotal = String(
-            parseFloat(item.precoUnitario) * parseFloat(newQuantity)
-          );
+          let newPrecoTotal: string;
+          if (item.unidadeMedida === 'METRO') {
+            const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
+            const totalMeters = parseFloat(newQuantity) * metragemPorPeca;
+            newPrecoTotal = String(parseFloat(item.precoUnitario) * totalMeters);
+          } else {
+            newPrecoTotal = String(parseFloat(item.precoUnitario) * parseFloat(newQuantity));
+          }
 
           newCart.itens[existingItemIndex] = {
             ...existingItem,
@@ -46,9 +51,14 @@ export const useCart = create<CartStore>()(
           };
         } else {
           // Adicionar novo item
-          const precoTotal = String(
-            parseFloat(item.precoUnitario) * parseFloat(item.quantidade)
-          );
+          let precoTotal: string;
+          if (item.unidadeMedida === 'METRO') {
+            const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
+            const totalMeters = parseFloat(item.quantidade) * metragemPorPeca;
+            precoTotal = String(parseFloat(item.precoUnitario) * totalMeters);
+          } else {
+            precoTotal = String(parseFloat(item.precoUnitario) * parseFloat(item.quantidade));
+          }
 
           newCart.itens.push({
             ...item,
@@ -95,9 +105,14 @@ export const useCart = create<CartStore>()(
         if (itemIndex >= 0) {
           const item = newCart.itens[itemIndex];
           const newQuantity = quantity;
-          const newPrecoTotal = String(
-            parseFloat(item.precoUnitario) * parseFloat(newQuantity)
-          );
+          let newPrecoTotal: string;
+          if (item.unidadeMedida === 'METRO') {
+            const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
+            const totalMeters = parseFloat(newQuantity) * metragemPorPeca;
+            newPrecoTotal = String(parseFloat(item.precoUnitario) * totalMeters);
+          } else {
+            newPrecoTotal = String(parseFloat(item.precoUnitario) * parseFloat(newQuantity));
+          }
 
           newCart.itens[itemIndex] = {
             ...item,

@@ -13,9 +13,9 @@ export function ProductCard({ product }: ProductCardProps) {
       className="group block"
     >
       <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
-        {product.imagem ? (
+        {product.imagens && product.imagens.length > 0 ? (
           <Image
-            src={product.imagem}
+            src={product.imagens[0].url}
             alt={product.titulo}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </p>
         {product.unidadeMedida && (
           <p className="text-sm text-gray-500">
-            por {product.unidadeMedida}
+            por {product.unidadeMedida.toLowerCase()}
           </p>
         )}
       </div>

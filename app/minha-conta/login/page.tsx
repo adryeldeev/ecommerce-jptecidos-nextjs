@@ -29,6 +29,11 @@ export default function LoginPage() {
       const response = await authApi.login(data);
       // TODO: Armazenar token em cookie HttpOnly via BFF
       console.log('Login successful:', response);
+      
+      // Salvar dados do usuário no Zustand
+      const { useAuth } = await import('@/features/account/application/use-auth');
+      useAuth.getState().setUser(response.usuario);
+      
       window.location.href = '/minha-conta/meus-pedidos';
     } catch (err) {
       setError('Email ou senha inválidos');

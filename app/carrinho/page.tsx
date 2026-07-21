@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Header } from '@/features/catalog/presentation/components/header';
 import { Footer } from '@/features/catalog/presentation/components/footer';
 import { useCart } from '@/features/cart/application/use-cart';
@@ -8,6 +9,7 @@ import Link from 'next/link';
 
 export default function CartPage() {
   const { cart, removeItem, updateQuantity, clearCart } = useCart();
+  const [stockErrors, setStockErrors] = useState<Record<string, string>>({});
 
   if (!cart || cart.itens.length === 0) {
     return (
@@ -23,7 +25,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/produtos"
-              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors"
+              className="inline-block bg-[#f5a623] text-white px-6 py-3 rounded-md font-semibold hover:bg-[#e0961f] transition-colors"
             >
               Continuar Comprando
             </Link>
@@ -67,31 +69,142 @@ export default function CartPage() {
                       {item.produtoTitulo}
                     </h3>
                     <p className="text-sm text-gray-500 mt-1">
-                      {item.variacao.cor}
-                      {item.variacao.largura && ` - ${item.variacao.largura}`}
+                      {item.variacao?.cor}
+                      {item.variacao?.largura && ` - ${item.variacao.largura}`}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
-                      SKU: {item.variacao.sku}
+                      SKU: {item.variacao?.sku}
                     </p>
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex items-center gap-2">
                         <label className="text-sm text-gray-600">Qtd:</label>
-                        <input
-                          type="number"
-                          min="1"
-                          value={item.quantidade}
-                          onChange={(e) =>
-                            updateQuantity(item.id, e.target.value)
-                          }
-                          className="w-20 rounded border px-2 py-1 text-sm"
-                        />
+                        {item.unidadeMedida === 'KG' ? (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => {
+                                const currentQty = parseInt(item.quantidade) || 0;
+                                const newQty = Math.max(5, currentQty - 5);
+                                updateQuantity(item.id, newQty.toString());
+                              }}
+                              disabled={parseInt(item.quantidade) <= 5}
+                              className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              −
+                            </button>
+                            <input
+                              type="number"
+                              min="5"
+                              step="5"
+                              value={item.quantidade}
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value) || 0;
+                                const roundedValue = Math.round(value / 5) * 5;
+                                const finalValue = Math.max(5, roundedValue);
+                                updateQuantity(item.id, finalValue.toString());
+                              }}
+                              className="w-20 rounded border px-2 py-1 text-sm text-center"
+                            />
+                            <button
+                              onClick={() => {
+                                const currentQty = parseInt(item.quantidade) || 0;
+                                const newQty = currentQty + 5;
+                                updateQuantity(item.id, newQty.toString());
+                              }}
+                              className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100"
+                            >
+                              +
+                            </button>
+                          </div>
+                        ) : item.unidadeMedida === 'METRO' ? (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => {
+                                const currentQty = parseInt(item.quantidade) || 0;
+                                const newQty = Math.max(1, currentQty - 1);
+                                updateQuantity(item.id, newQty.toString());
+                              }}
+                              disabled={parseInt(item.quantidade) <= 1}
+                              className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              −
+                            </button>
+                            <input
+                              type="number"
+                              min="1"
+                              step="1"
+                              value={item.quantidade}
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value) || 0;
+                                const finalValue = Math.max(1, value);
+                                const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
+                                const totalMeters = finalValue * metragemPorPeca;
+                                const stock = parseFloat(item.variacao?.estoque || '0');
+                                
+                                if (totalMeters > stock) {
+                                  const maxPieces = Math.floor(stock / metragemPorPeca);
+                                  setStockErrors({
+                                    ...stockErrors,
+                                    [item.id]: `Apenas ${maxPieces} peças disponíveis em estoque`
+                                  });
+                                  return;
+                                }
+                                
+                                setStockErrors({ ...stockErrors, [item.id]: '' });
+                                updateQuantity(item.id, finalValue.toString());
+                              }}
+                              className="w-20 rounded border px-2 py-1 text-sm text-center"
+                            />
+                            <button
+                              onClick={() => {
+                                const currentQty = parseInt(item.quantidade) || 0;
+                                const newQty = currentQty + 1;
+                                const metragemPorPeca = parseFloat(item.variacao?.metragemPorPeca || '0');
+                                const totalMeters = newQty * metragemPorPeca;
+                                const stock = parseFloat(item.variacao?.estoque || '0');
+                                
+                                if (totalMeters > stock) {
+                                  const maxPieces = Math.floor(stock / metragemPorPeca);
+                                  setStockErrors({
+                                    ...stockErrors,
+                                    [item.id]: `Apenas ${maxPieces} peças disponíveis em estoque`
+                                  });
+                                  return;
+                                }
+                                
+                                setStockErrors({ ...stockErrors, [item.id]: '' });
+                                updateQuantity(item.id, newQty.toString());
+                              }}
+                              className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100"
+                            >
+                              +
+                            </button>
+                          </div>
+                        ) : (
+                          <input
+                            type="number"
+                            min="1"
+                            value={item.quantidade}
+                            onChange={(e) =>
+                              updateQuantity(item.id, e.target.value)
+                            }
+                            className="w-20 rounded border px-2 py-1 text-sm"
+                          />
+                        )}
+                        {stockErrors[item.id] && (
+                          <p className="text-red-500 text-xs mt-1">{stockErrors[item.id]}</p>
+                        )}
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">
                           R$ {item.precoTotal}
                         </p>
                         <p className="text-sm text-gray-500">
-                          R$ {item.precoUnitario} un.
+                          R$ {item.precoUnitario}/{item.unidadeMedida === 'KG' ? 'kg' : item.unidadeMedida === 'METRO' ? 'm' : 'un'}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {item.unidadeMedida === 'KG' ? `${item.quantidade} kg` : 
+                           item.unidadeMedida === 'METRO' ? `${item.quantidade} peças (${(parseInt(item.quantidade) * parseFloat(item.variacao?.metragemPorPeca || '0')).toFixed(0)}m)` :
+                           `${item.quantidade} un`}
                         </p>
                       </div>
                     </div>
@@ -128,14 +241,14 @@ export default function CartPage() {
 
                 <Link
                   href="/checkout"
-                  className="block w-full bg-blue-600 text-white text-center py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors mb-3"
+                  className="block w-full bg-[#f5a623] text-white text-center py-3 rounded-md font-semibold hover:bg-[#e0961f] transition-colors mb-3"
                 >
                   Finalizar Compra
                 </Link>
 
                 <Link
                   href="/produtos"
-                  className="block w-full text-center text-blue-600 hover:underline"
+                  className="block w-full text-center text-[#f5a623] hover:underline"
                 >
                   Continuar Comprando
                 </Link>

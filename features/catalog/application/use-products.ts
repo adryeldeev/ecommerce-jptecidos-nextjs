@@ -14,6 +14,8 @@ export function useProducts(params: {
   precoMax?: string;
   somenteDisponiveis?: boolean;
   ordenacao?: string;
+  maisProcurado?: boolean;
+  lancamento?: boolean;
 }) {
   return useQuery({
     queryKey: ['products', params],

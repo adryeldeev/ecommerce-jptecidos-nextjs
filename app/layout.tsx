@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryClientProvider } from "@/lib/providers/query-provider";
+import { WhatsAppButton } from "@/features/catalog/presentation/components/whatsapp-button";
 
-const poppins = Poppins({
+const inter = Inter({
   weight: ['300', '400', '500', '600', '700', '800'],
   subsets: ["latin"],
-  variable: "--font-poppins",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -22,13 +23,14 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${poppins.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-poppins">
+      <body className="min-h-full flex flex-col font-inter">
         <QueryClientProvider>
           <div className="pt-16">
             {children}
           </div>
+          <WhatsAppButton />
         </QueryClientProvider>
       </body>
     </html>

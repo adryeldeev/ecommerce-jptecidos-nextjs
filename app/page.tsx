@@ -1,6 +1,12 @@
 import { Header } from '@/features/catalog/presentation/components/header';
 import { Footer } from '@/features/catalog/presentation/components/footer';
+import { FeaturedProducts } from '@/features/catalog/presentation/components/featured-products';
+import { NewProducts } from '@/features/catalog/presentation/components/new-products';
+import { WhyChooseJP } from '@/features/catalog/presentation/components/why-choose-jp';
+import { Testimonials } from '@/features/catalog/presentation/components/testimonials';
+import { CTASection } from '@/features/catalog/presentation/components/cta-section';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -30,10 +36,13 @@ export default function Home() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
               <div className="max-w-3xl">
                 <h1 className="text-[44.44px] font-bold text-white mb-6 leading-tight">
-                  Matéria-Prima Têxtil de Alta Performance para Grandes Confecções
+                 Tecido que não compromete o resultado da sua peça.
                 </h1>
                 <p className="text-[16px] text-white mb-8 leading-relaxed">
-                  Explore nossa linha exclusiva de rolos de jeans primário estruturado e tecidos tecnológicos. Condições exclusivas de atacado para marcas de moda e fabricantes.
+                  Fio resistente, tingimento uniforme e composição 
+                  garantida em cada lote. Jeans, brim e algodão prontos 
+                  para aguentar corte, costura e lavagem industrial 
+                  sem perder padrão.
                 </p>
                 <div className="flex gap-4">
                   <Link
@@ -52,41 +61,62 @@ export default function Home() {
               </div>
 
               {/* Authority Stats */}
-              <div className="mt-44 grid grid-cols-3 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-white mb-2">+20</p>
-                  <p className="text-white text-sm">Anos de Tradição</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-white mb-2">+100</p>
-                  <p className="text-white text-sm">Confecções Atendidas</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-white mb-2">+98%</p>
-                  <p className="text-white text-sm">Satisfação Garantida</p>
+              <div className="mt-44 max-w-3xl mx-auto">
+                <div className="border-t border-b border-white/30 py-8">
+                  <div className="grid grid-cols-3 divide-x divide-white/30">
+                    <div className="text-center px-4">
+                      <p className="text-4xl font-bold text-white mb-2">+20</p>
+                      <p className="text-white text-sm">Anos de Tradição</p>
+                    </div>
+                    <div className="text-center px-4">
+                      <p className="text-4xl font-bold text-white mb-2">+100</p>
+                      <p className="text-white text-sm">Confecções Atendidas</p>
+                    </div>
+                    <div className="text-center px-4">
+                      <p className="text-4xl font-bold text-white mb-2">+98%</p>
+                      <p className="text-white text-sm">Satisfação Garantida</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
+        <FeaturedProducts />
+
+        <WhyChooseJP />
+
+        <NewProducts />
+
         {/* Featured Categories */}
         <section className="py-16 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Categorias em Destaque
+              Categorias
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {['Algodão', 'Seda', 'Linho'].map((category) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { name: 'Jeans', image: '/imgCategoriaJP.svg' },
+                { name: 'Malha', image: '/imgCategoriaJP02.svg' },
+                { name: 'Linho', image: '/imgCategoriaJP03.svg' },
+                { name: 'Algodão', image: '/imgCategoriaJP04.svg' },
+              ].map((category) => (
                 <Link
-                  key={category}
-                  href={`/produtos?categoria=${category.toLowerCase()}`}
-                  className="group relative h-48 rounded-lg overflow-hidden bg-gray-100"
+                  key={category.name}
+                  href={`/produtos?categoria=${category.name.toLowerCase()}`}
+                  className="group relative h-48 rounded-lg overflow-hidden  h-[300px]"
                 >
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <h3 className="text-xl font-semibold text-white">
-                      {category}
+                      {category.name}
                     </h3>
                   </div>
                 </Link>
@@ -95,23 +125,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 bg-[#DD8A05] text-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Comece seu projeto hoje
-            </h2>
-            <p className="text-lg mb-8">
-              Explore nossa coleção e encontre o tecido perfeito para sua criação
-            </p>
-            <Link
-              href="/produtos"
-              className="inline-block bg-white text-[#DD8A05] px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
-              Explorar Catálogo
-            </Link>
-          </div>
-        </section>
+        <Testimonials />
+
+        <CTASection />
       </main>
 
       <Footer />

@@ -3,12 +3,16 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/features/account/application/use-auth';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { user, isAuthenticated, logout } = useAuth();
   const isHomePage = pathname === '/';
 
   useEffect(() => {
@@ -42,6 +46,7 @@ export function Header() {
             </span>
           </Link>
 
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/produtos"
@@ -63,9 +68,9 @@ export function Header() {
             </Link>
           </nav>
 
-          <div className="flex items-center space-x-4">
-            {/* Search Input */}
-            <form onSubmit={handleSearch} className="relative">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            {/* Search Input - Hidden on mobile */}
+            <form onSubmit={handleSearch} className="relative hidden sm:block">
               <input
                 type="text"
                 placeholder="Buscar produtos..."
@@ -93,30 +98,72 @@ export function Header() {
               </button>
             </form>
 
-            <Link
-              href="/minha-conta"
-              className={shouldShowScrolled ? 'text-[#DD8A05] hover:text-[#c47a04]' : 'text-white hover:text-gray-200'}
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="relative">
+              <Link
+                href="/minha-conta"
+                className={`${shouldShowScrolled ? 'text-[#DD8A05] hover:text-[#c47a04]' : 'text-white hover:text-gray-200'} p-1`}
+                onClick={(e) => {
+                  if (isAuthenticated) {
+                    e.preventDefault();
+                    setIsUserMenuOpen(!isUserMenuOpen);
+                  }
+                }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </Link>
+                {isAuthenticated && user ? (
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#f5a623] flex items-center justify-center text-white font-semibold cursor-pointer">
+                    {user.nome.charAt(0).toUpperCase()}
+                  </div>
+                ) : (
+                  <svg
+                    className="h-5 w-5 md:h-6 md:w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                )}
+              </Link>
+              {isUserMenuOpen && isAuthenticated && user && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <Link
+                    href="/minha-conta/perfil"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    Minha Conta
+                  </Link>
+                  <Link
+                    href="/minha-conta/meus-pedidos"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    Meus Pedidos
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsUserMenuOpen(false);
+                      router.push('/');
+                    }}
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Sair
+                  </button>
+                </div>
+              )}
+            </div>
             <Link 
               href="/carrinho" 
-              className={shouldShowScrolled ? 'text-[#DD8A05] hover:text-[#c47a04]' : 'text-white hover:text-gray-200'}
+              className={`${shouldShowScrolled ? 'text-[#DD8A05] hover:text-[#c47a04]' : 'text-white hover:text-gray-200'} p-1`}
             >
               <svg
-                className="h-6 w-6"
+                className="h-5 w-5 md:h-6 md:w-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -129,8 +176,94 @@ export function Header() {
                 />
               </svg>
             </Link>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`md:hidden p-2 ${shouldShowScrolled ? 'text-gray-900' : 'text-white'}`}
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isMobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200">
+            <nav className="flex flex-col space-y-3">
+              <Link
+                href="/produtos"
+                className={`font-medium ${shouldShowScrolled ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-gray-200'}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Produtos
+              </Link>
+              <Link
+                href="/sobre"
+                className={`font-medium ${shouldShowScrolled ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-gray-200'}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sobre
+              </Link>
+              <Link
+                href="/contato"
+                className={`font-medium ${shouldShowScrolled ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-gray-200'}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contato
+              </Link>
+              {/* Mobile search */}
+              <form onSubmit={handleSearch} className="relative sm:hidden">
+                <input
+                  type="text"
+                  placeholder="Buscar produtos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full rounded-full border border-gray-300 bg-white px-4 py-2 pr-10 text-sm focus:border-[#DD8A05] focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full bg-[#DD8A05] text-white hover:bg-[#c47a04] transition-colors"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                </button>
+              </form>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );

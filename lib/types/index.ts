@@ -8,35 +8,45 @@ export interface Category {
 
 export interface ProductVariation {
   id: string;
-  produtoId: string;
   cor: string;
+  corCodigo?: string;
   largura?: string;
+  preco?: string;
   estoque: string;
   sku: string;
+  imagens: { url: string; ordem: number }[];
+  metragemPorPeca?: string;
 }
 
 export interface Product {
   id: string;
   titulo: string;
-  descricao: string;
+  slug: string;
+  descricao?: string;
+  composicao?: string;
+  gramatura?: number;
+  fabricanteId?: string;
+  observacoes?: string;
+  pesoGramas?: number;
+  dimensaoAlturaCm?: number;
+  dimensaoLarguraCm?: number;
+  dimensaoComprimentoCm?: number;
   precoBase: string;
-  quantidadeEstoque: string;
-  unidadeMedida: string;
+  unidadeMedida: 'METRO' | 'KG' | 'UNIDADE';
   categoriaId: string;
-  categoria?: Category;
-  variacoes?: ProductVariation[];
-  imagem?: string;
-  slug?: string;
+  categoria: { nome: string; slug: string };
+  imagens: { url: string; ordem: number }[];
+  variacoes: ProductVariation[];
+  maisProcurado?: boolean;
+  lancamento?: boolean;
 }
 
 export interface ProductListResponse {
-  data: Product[];
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
+  items: Product[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 }
 
 export interface AuthResponse {

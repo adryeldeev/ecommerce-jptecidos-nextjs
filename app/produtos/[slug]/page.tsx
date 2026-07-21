@@ -1,178 +1,140 @@
-'use client';
-
 import { Header } from '@/features/catalog/presentation/components/header';
 import { Footer } from '@/features/catalog/presentation/components/footer';
-import { ImageGallery } from '@/features/catalog/presentation/components/image-gallery';
-import { VariationSelector } from '@/features/catalog/presentation/components/variation-selector';
-import { useProducts } from '@/features/catalog/application/use-products';
-import { ProductVariation } from '@/lib/types';
-import { useState } from 'react';
+import { ProductImageGallery } from '@/features/catalog/presentation/components/product-image-gallery';
+import { ProductDetailClient } from '@/features/catalog/presentation/components/product-detail-client';
+import { RelatedProducts } from '@/features/catalog/presentation/components/related-products';
+import { productApi } from '@/features/catalog/infrastructure/product-api';
+import { generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo/json-ld';
+import { Product } from '@/lib/types';
+import { notFound } from 'next/navigation';
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const { data: product, isLoading, error } = useProducts({});
-  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
+export async function generateMetadata({ params }: ProductPageProps) {
+  const { slug } = await params;
+  try {
+    const product = await productApi.getProductBySlug(slug);
 
-  // Mock - na prática usaria getProductBySlug
-  const mockProduct = {
-    id: '1',
-    titulo: 'Tecido de Algodão Premium',
-    descricao: 'Tecido de algodão de alta qualidade, ideal para costura e artesanato. 100% algodão, macio e durável.',
-    precoBase: '39.90',
-    unidadeMedida: 'metro',
-    imagem: '/placeholder.jpg',
-    variacoes: [
-      { id: '1', produtoId: '1', cor: 'Branco', largura: '150cm', estoque: '100', sku: 'ALG-BRA-150' },
-      { id: '2', produtoId: '1', cor: 'Azul', largura: '150cm', estoque: '50', sku: 'ALG-AZU-150' },
-      { id: '3', produtoId: '1', cor: 'Vermelho', largura: '150cm', estoque: '30', sku: 'ALG-VER-150' },
-    ],
-  };
+    return {
+      title: `${product.titulo} | JP Tecidos`,
+      description: product.descricao || `${product.titulo} - Tecido de alta qualidade para confecções`,
+      openGraph: {
+        title: product.titulo,
+        description: product.descricao || `${product.titulo} - Tecido de alta qualidade para confecções`,
+        images: product.imagens?.map((img) => img.url) || [],
+        type: 'website',
+      },
+      alternates: {
+        canonical: `/produtos/${slug}`,
+      },
+    };
+  } catch (error) {
+    return {
+      title: 'Produto não encontrado | JP Tecidos',
+    };
+  }
+}
 
-  const productData = mockProduct;
-  const [quantity, setQuantity] = useState(productData.unidadeMedida === 'kg' ? '5' : '1');
+export const revalidate = 300; // ISR - revalida a cada 5 minutos
 
-  const handleAddToCart = () => {
-    if (!selectedVariation) {
-      alert('Selecione uma variação antes de adicionar ao carrinho');
-      return;
-    }
-    // TODO: Implementar lógica de carrinho
-    console.log('Adicionar ao carrinho:', { variation: selectedVariation, quantity });
-  };
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
+  let product: Product;
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 py-12">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="aspect-square bg-gray-200 rounded-lg animate-pulse" />
-              <div className="space-y-4">
-                <div className="h-8 bg-gray-200 rounded animate-pulse" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2" />
-              </div>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
+  try {
+    product = await productApi.getProductBySlug(slug);
+  } catch (error) {
+    notFound();
   }
 
-  if (error) {
-    return (
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 py-12">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-red-600 mb-4">Erro ao carregar produto.</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-            >
-              Recarregar
-            </button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
+  // Buscar produtos relacionados (pede 5, corta para 4 após excluir atual)
+  let relatedProducts: Product[] = [];
+  try {
+    const relatedResponse = await productApi.getProducts({
+      categoriaSlug: product.categoria.slug,
+      limit: 5,
+    });
+    relatedProducts = relatedResponse.items
+      .filter((p) => p.id !== product.id)
+      .slice(0, 4);
+  } catch (error) {
+    // Se falhar, continua sem produtos relacionados
   }
+
+  const productJsonLd = generateProductJsonLd(product);
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Home', item: '/' },
+    { name: product.categoria.nome, item: `/produtos?categoria=${product.categoria.slug}` },
+    { name: product.titulo, item: `/produtos/${product.slug}` },
+  ]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      
-      <main className="flex-1 py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Galeria de imagens */}
-            <div>
-              <ImageGallery
-                images={productData.imagem ? [productData.imagem] : []}
-                alt={productData.titulo}
-              />
-            </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
 
-            {/* Informações do produto */}
-            <div className="space-y-6">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {productData.titulo}
-                </h1>
-                <p className="text-2xl font-semibold text-gray-900">
-                  R$ {productData.precoBase}
-                </p>
-                {productData.unidadeMedida && (
-                  <p className="text-sm text-gray-600">
-                    por {productData.unidadeMedida}
-                  </p>
-                )}
+      <div className="flex flex-col min-h-screen">
+        <Header />
+
+        <main className="flex-1 py-8 md:py-12 overflow-x-hidden">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {/* Breadcrumb */}
+            <nav className="mb-6 md:mb-8 text-xs md:text-sm text-gray-600">
+              <ol className="flex items-center gap-1 md:gap-2 flex-wrap">
+                <li>
+                  <a href="/" className="hover:text-gray-900">
+                    Home
+                  </a>
+                </li>
+                <li>/</li>
+                <li>
+                  <a
+                    href={`/produtos?categoria=${product.categoria.slug}`}
+                    className="hover:text-gray-900"
+                  >
+                    {product.categoria.nome}
+                  </a>
+                </li>
+                <li>/</li>
+                <li className="text-gray-900 truncate max-w-[150px] sm:max-w-[200px] md:max-w-none">{product.titulo}</li>
+              </ol>
+            </nav>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+              {/* Galeria de imagens */}
+              <div className="overflow-hidden">
+                <ProductImageGallery
+                  images={product.imagens}
+                  alt={product.titulo}
+                />
               </div>
 
-              <div className="border-t border-gray-200 pt-6">
-                <h2 className="text-lg font-semibold mb-2">Descrição</h2>
-                <p className="text-gray-600">{productData.descricao}</p>
-              </div>
-
-              {/* Seletor de variações */}
-              {productData.variacoes && productData.variacoes.length > 0 && (
-                <div className="border-t border-gray-200 pt-6">
-                  <VariationSelector
-                    variations={productData.variacoes}
-                    onVariationSelect={setSelectedVariation}
-                  />
-                </div>
-              )}
-
-              {/* Quantidade e adicionar ao carrinho */}
-              <div className="border-t border-gray-200 pt-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Quantidade
-                    </label>
-                    <input
-                      type="number"
-                      min={productData.unidadeMedida === 'kg' ? '5' : '1'}
-                      step={productData.unidadeMedida === 'kg' ? '0.1' : '1'}
-                      value={quantity}
-                      onChange={(e) => setQuantity(e.target.value)}
-                      className="w-24 rounded-md border border-gray-300 px-3 py-2 focus:border-gray-500 focus:outline-none"
-                    />
-                    {productData.unidadeMedida === 'kg' && (
-                      <p className="text-xs text-gray-500 mt-1">Mínimo: 5kg</p>
-                    )}
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors"
-                >
-                  Adicionar ao Carrinho
-                </button>
-              </div>
-
-              {/* Informações adicionais */}
-              <div className="border-t border-gray-200 pt-6 space-y-2 text-sm text-gray-600">
-                <p>✓ Envio em até 3 dias úteis</p>
-                <p>✓ Frete calculado no checkout</p>
-                <p>✓ 7 dias para devolução</p>
+              {/* Informações do produto */}
+              <div className="overflow-hidden">
+                <ProductDetailClient product={product} />
               </div>
             </div>
+
+            {/* Produtos relacionados */}
+            <RelatedProducts
+              products={relatedProducts}
+              currentProductId={product.id}
+            />
           </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 }
