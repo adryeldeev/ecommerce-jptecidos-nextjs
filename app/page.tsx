@@ -3,10 +3,11 @@ import { Footer } from '@/features/catalog/presentation/components/footer';
 import { FeaturedProducts } from '@/features/catalog/presentation/components/featured-products';
 import { NewProducts } from '@/features/catalog/presentation/components/new-products';
 import { WhyChooseJP } from '@/features/catalog/presentation/components/why-choose-jp';
+import { CategoriesSection } from '@/features/catalog/presentation/components/categories-section';
 import { Testimonials } from '@/features/catalog/presentation/components/testimonials';
 import { CTASection } from '@/features/catalog/presentation/components/cta-section';
 import Link from 'next/link';
-import Image from 'next/image';
+import { CreditCard, QrCode, FileText } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -15,33 +16,34 @@ export default function Home() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative -mt-8 md:-mt-16 h-[859px] bg-black overflow-hidden">
-          {/* Video Background */}
+        <section className="relative -mt-8 md:-mt-16 bg-black overflow-hidden">
+          {/* Video Background — versão leve por dispositivo (sem áudio) + poster pra evitar tela em branco */}
           <div className="absolute inset-0">
             <video
               autoPlay
               loop
               muted
               playsInline
+              poster="/hero-poster.jpg"
               className="w-full h-full object-cover"
-              style={{ objectFit: 'cover' }}
             >
-              <source src="/video.webm" type="video/webm" />
+              <source src="/hero-mobile.webm" type="video/webm" media="(max-width: 767px)" />
+              <source src="/hero-desktop.webm" type="video/webm" />
             </video>
             <div className="absolute inset-0 bg-black/50" />
           </div>
 
           {/* Content */}
-          <div className="relative z-10 h-full flex items-center">
+          <div className="relative z-10 py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
               <div className="max-w-3xl">
-                <h1 className="text-[44.44px] font-bold text-white mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-[44px] font-bold text-white mb-6 leading-tight">
                  Tecido que não compromete o resultado da sua peça.
                 </h1>
-                <p className="text-[16px] text-white mb-8 leading-relaxed">
-                  Fio resistente, tingimento uniforme e composição 
-                  garantida em cada lote. Jeans, brim e algodão prontos 
-                  para aguentar corte, costura e lavagem industrial 
+                <p className="text-sm sm:text-base text-white mb-8 leading-relaxed">
+                  Fio resistente, tingimento uniforme e composição
+                  garantida em cada lote. Jeans, brim e algodão prontos
+                  para aguentar corte, costura e lavagem industrial
                   sem perder padrão.
                 </p>
                 <div className="flex gap-4">
@@ -52,7 +54,7 @@ export default function Home() {
                     Ver Produtos
                   </Link>
                   <Link
-                    href="/contato"
+                    href="#contato"
                     className="inline-block bg-white text-[#DD8A05] px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                   >
                     Contato
@@ -61,20 +63,20 @@ export default function Home() {
               </div>
 
               {/* Authority Stats */}
-              <div className="mt-44 max-w-3xl mx-auto">
+              <div className="mt-12 md:mt-16 max-w-3xl mx-auto">
                 <div className="border-t border-b border-white/30 py-8">
                   <div className="grid grid-cols-3 divide-x divide-white/30">
                     <div className="text-center px-4">
-                      <p className="text-4xl font-bold text-white mb-2">+20</p>
-                      <p className="text-white text-sm">Anos de Tradição</p>
+                      <p className="text-2xl md:text-4xl font-bold text-white mb-2">+20</p>
+                      <p className="text-white text-xs md:text-sm">Anos de Tradição</p>
                     </div>
                     <div className="text-center px-4">
-                      <p className="text-4xl font-bold text-white mb-2">+100</p>
-                      <p className="text-white text-sm">Confecções Atendidas</p>
+                      <p className="text-2xl md:text-4xl font-bold text-white mb-2">+100</p>
+                      <p className="text-white text-xs md:text-sm">Confecções Atendidas</p>
                     </div>
                     <div className="text-center px-4">
-                      <p className="text-4xl font-bold text-white mb-2">+98%</p>
-                      <p className="text-white text-sm">Satisfação Garantida</p>
+                      <p className="text-2xl md:text-4xl font-bold text-white mb-2">+98%</p>
+                      <p className="text-white text-xs md:text-sm">Satisfação Garantida</p>
                     </div>
                   </div>
                 </div>
@@ -89,45 +91,36 @@ export default function Home() {
 
         <NewProducts />
 
-        {/* Featured Categories */}
-        <section className="py-16 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Categorias
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { name: 'Jeans', image: '/imgCategoriaJP.svg' },
-                { name: 'Malha', image: '/imgCategoriaJP02.svg' },
-                { name: 'Linho', image: '/imgCategoriaJP03.svg' },
-                { name: 'Algodão', image: '/imgCategoriaJP04.svg' },
-              ].map((category) => (
-                <Link
-                  key={category.name}
-                  href={`/produtos?categoria=${category.name.toLowerCase()}`}
-                  className="group relative h-48 rounded-lg overflow-hidden  h-[300px]"
-                >
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <h3 className="text-xl font-semibold text-white">
-                      {category.name}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        <CategoriesSection />
 
         <Testimonials />
 
-        <CTASection />
+        <CTASection id="contato" backgroundColor="bg-gray-50" />
+
+        {/* Selos de pagamento */}
+        <section className="py-10 bg-white border-t border-gray-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
+              <p className="text-sm font-medium text-gray-500">
+                Pagamento 100% seguro
+              </p>
+              <div className="flex items-center gap-8">
+                <div className="flex items-center gap-2 text-gray-700">
+                  <CreditCard className="w-6 h-6" />
+                  <span className="text-sm font-medium">Cartão</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-700">
+                  <QrCode className="w-6 h-6" />
+                  <span className="text-sm font-medium">PIX</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-700">
+                  <FileText className="w-6 h-6" />
+                  <span className="text-sm font-medium">Boleto</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

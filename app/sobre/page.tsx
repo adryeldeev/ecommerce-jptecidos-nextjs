@@ -48,7 +48,7 @@ export default function AboutPage() {
               <div className="bg-gray-50 p-6 rounded-lg">
                 <h3 className="font-semibold text-gray-900 mb-2">Controle de qualidade por lote</h3>
                 <p className="text-gray-600 text-sm">
-                  Cada lote de produção é testado para composição, gramatura e tingimento. O que você aprova na amostra é o mesmo que chega no pedido.
+                  Cada lote de produção é testado para composição, gramatura e tingimento. O tecido que você vê no catálogo é o mesmo que chega no seu pedido.
                 </p>
               </div>
               <div className="bg-gray-50 p-6 rounded-lg">
@@ -58,9 +58,9 @@ export default function AboutPage() {
                 </p>
               </div>
               <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Envio de amostra física</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">Pagamento facilitado</h3>
                 <p className="text-gray-600 text-sm">
-                  Antes de fechar pedidos grandes, você pode solicitar amostra para testar resistência, cor e caimento na prática.
+                  Aceitamos cartão, PIX e boleto, com emissão de nota fiscal para CNPJ — sem burocracia para fechar pedido.
                 </p>
               </div>
               <div className="bg-gray-50 p-6 rounded-lg">
@@ -80,11 +80,11 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <CTASection 
+        <CTASection
           title="Conheça nossos produtos"
-          subtitle="Explore nosso catálogo de tecidos e retalhos, ou solicite uma amostra para testar a qualidade antes de comprar."
-          primaryButtonText="Solicitar Amostra"
-          primaryButtonLink="/contato"
+          subtitle="Explore nosso catálogo de tecidos e retalhos, com a garantia de qualidade conferida em cada lote."
+          primaryButtonText="Falar no Whatsapp"
+          primaryButtonLink="https://wa.me/5585985661823"
           secondaryButtonText="Ver Catálogo"
           secondaryButtonLink="/produtos"
         />

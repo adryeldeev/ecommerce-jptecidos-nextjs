@@ -5,7 +5,7 @@ import { FAQAccordion } from '@/features/catalog/presentation/components/faq-acc
 
 export const metadata = {
   title: 'Perguntas Frequentes - FAQ JP Tecidos',
-  description: 'Encontre respostas para as dúvidas mais comuns sobre compra de tecidos, retalhos, quantidade mínima, amostras, frete e formas de pagamento.',
+  description: 'Encontre respostas para as dúvidas mais comuns sobre compra de tecidos, retalhos, quantidade mínima, frete e formas de pagamento.',
 };
 
 export default function FAQPage() {
@@ -20,11 +20,11 @@ export default function FAQPage() {
     },
     {
       question: 'Como sei se o tecido serve para o meu tipo de peça?',
-      answer: 'Você pode solicitar amostra física antes de fechar pedido grande. Nossa equipe técnica também pode orientar na escolha do material mais adequado para o tipo de peça que você produz.',
+      answer: 'Cada produto no catálogo mostra composição, gramatura e fotos reais do tecido. Nossa equipe técnica também pode orientar na escolha do material mais adequado para o tipo de peça que você produz — fale com a gente pelo WhatsApp ou e-mail.',
     },
     {
-      question: 'Posso pedir amostra antes de comprar em grande quantidade?',
-      answer: 'Sim. Enviamos amostra física para que você possa testar resistência, cor e caimento na prática antes de fechar pedidos grandes. Entre em contato pelo WhatsApp ou e-mail para solicitar.',
+      question: 'Como posso ter certeza da qualidade antes de comprar em grande volume?',
+      answer: 'Nosso controle de qualidade por lote garante que o tecido do catálogo é o mesmo que chega no seu pedido. Além disso, nossa equipe técnica está sempre disponível pelo WhatsApp para tirar dúvidas sobre composição, gramatura e uso antes de você fechar pedido grande.',
     },
     {
       question: 'Qual a diferença entre retalho, brim e algodão vendidos aqui?',
@@ -32,7 +32,7 @@ export default function FAQPage() {
     },
     {
       question: 'O tecido varia de cor/textura entre lotes diferentes?',
-      answer: 'Controlamos composição, gramatura e tingimento em cada lote de produção. O jeans, brim ou algodão que você aprovou na amostra é o mesmo que chega no seu pedido — sem variação que comprometa sua confecção.',
+      answer: 'Controlamos composição, gramatura e tingimento em cada lote de produção. O jeans, brim ou algodão que você vê no catálogo é o mesmo que chega no seu pedido — sem variação que comprometa sua confecção.',
     },
     {
       question: 'Como funciona o frete para grandes volumes / fora do estado?',
@@ -52,7 +52,7 @@ export default function FAQPage() {
     },
     {
       question: 'Posso trocar ou devolver se o tecido não for o esperado?',
-      answer: 'Como o produto é vendido por lote/kg e muitas vezes após aprovação de amostra, a responsabilidade do comprador em conferir a amostra reduz o escopo de trocas. Trocas são aceitas em caso de defeito de fabricação ou divergência do que foi pedido. Consulte nossa Política de Trocas para detalhes.',
+      answer: 'Como o produto é vendido por lote/kg, pequenas variações naturais de tom ou textura são inerentes à matéria-prima têxtil e não configuram defeito. Trocas são aceitas em caso de defeito de fabricação ou divergência do que foi pedido. Consulte nossa Política de Trocas para detalhes.',
     },
   ];
 
@@ -67,7 +67,7 @@ export default function FAQPage() {
           </h1>
           
           <p className="text-gray-600 text-lg mb-12 leading-relaxed">
-            Encontre respostas para as dúvidas mais comuns sobre compra de tecidos, retalhos, amostras, frete e formas de pagamento.
+            Encontre respostas para as dúvidas mais comuns sobre compra de tecidos, retalhos, frete e formas de pagamento.
           </p>
 
           <FAQAccordion faqs={faqs} />

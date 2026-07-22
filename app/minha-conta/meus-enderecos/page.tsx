@@ -72,7 +72,7 @@ export default function MyAddressesPage() {
             </h1>
             <button
               onClick={() => setShowForm(!showForm)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors"
+              className="bg-[#f5a623] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#e0961f] transition-colors"
             >
               {showForm ? 'Cancelar' : 'Adicionar Endereço'}
             </button>
@@ -124,7 +124,7 @@ export default function MyAddressesPage() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => setEditingAddress(address)}
-                        className="text-blue-600 hover:text-blue-700"
+                        className="text-[#f5a623] hover:text-[#e0961f]"
                       >
                         <Edit className="h-5 w-5" />
                       </button>

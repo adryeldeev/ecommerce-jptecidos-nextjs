@@ -59,7 +59,7 @@ export default function MyOrdersPage() {
                     </span>
                     <Link
                       href={`/minha-conta/pedidos/${order.id}`}
-                      className="text-blue-600 hover:underline text-sm"
+                      className="text-[#f5a623] hover:underline text-sm"
                     >
                       Ver detalhes
                     </Link>

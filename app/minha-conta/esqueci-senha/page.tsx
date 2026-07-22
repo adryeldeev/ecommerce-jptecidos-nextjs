@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
               </p>
               <Link
                 href="/minha-conta/login"
-                className="text-blue-600 hover:underline"
+                className="text-[#f5a623] hover:underline"
               >
                 Voltar para o login
               </Link>
@@ -102,7 +102,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#f5a623] text-white py-2 rounded-md font-semibold hover:bg-[#e0961f] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? 'Enviando...' : 'Enviar Email'}
               </button>
@@ -111,7 +111,7 @@ export default function ForgotPasswordPage() {
             <div className="mt-6 text-center">
               <Link
                 href="/minha-conta/login"
-                className="text-sm text-blue-600 hover:underline"
+                className="text-sm text-[#f5a623] hover:underline"
               >
                 Voltar para o login
               </Link>

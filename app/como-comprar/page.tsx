@@ -4,7 +4,7 @@ import { CTASection } from '@/features/catalog/presentation/components/cta-secti
 
 export const metadata = {
   title: 'Como Comprar - Guia Completo JP Tecidos',
-  description: 'Aprenda como comprar tecidos e retalhos na JP Tecidos: unidades de venda, quantidade mínima, solicitação de amostra, formas de pagamento e prazos de entrega.',
+  description: 'Aprenda como comprar tecidos e retalhos na JP Tecidos: unidades de venda, quantidade mínima, formas de pagamento e prazos de entrega.',
 };
 
 export default function HowToBuyPage() {
@@ -21,8 +21,8 @@ export default function HowToBuyPage() {
     },
     {
       number: 3,
-      title: 'Solicite amostra (opcional)',
-      description: 'Antes de fechar pedidos grandes, você pode solicitar amostra física para testar resistência, cor e caimento na prática. Entre em contato pelo WhatsApp ou e-mail.',
+      title: 'Confira os detalhes do produto',
+      description: 'Cada produto no catálogo mostra composição, gramatura e fotos reais do tecido. Ficou com dúvida antes de fechar pedido grande? Fale com a gente pelo WhatsApp ou e-mail.',
     },
     {
       number: 4,
@@ -88,13 +88,13 @@ export default function HowToBuyPage() {
           </div>
         </div>
 
-        <CTASection 
+        <CTASection
           title="Pronto para comprar?"
-          subtitle="Explore nosso catálogo de tecidos e retalhos, ou solicite uma amostra para testar a qualidade antes de fechar pedido."
+          subtitle="Explore nosso catálogo de tecidos e retalhos com a garantia de qualidade conferida em cada lote."
           primaryButtonText="Ver Catálogo"
           primaryButtonLink="/produtos"
-          secondaryButtonText="Solicitar Amostra"
-          secondaryButtonLink="/contato"
+          secondaryButtonText="Falar no Whatsapp"
+          secondaryButtonLink="https://wa.me/5585985661823"
         />
       </main>
 

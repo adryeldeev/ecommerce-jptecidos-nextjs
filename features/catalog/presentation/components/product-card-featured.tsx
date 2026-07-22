@@ -41,7 +41,7 @@ export function ProductCardFeatured({ product }: ProductCardFeaturedProps) {
           {product.titulo}
         </h3>
         <p className="text-xs text-gray-600 mb-3 line-clamp-1">
-          {product.descricao || 'Tecido de alta qualidade'}
+          {product.composicao || product.descricao || 'Tecido de alta qualidade'}
         </p>
         <div className="flex items-center justify-between">
           <div>

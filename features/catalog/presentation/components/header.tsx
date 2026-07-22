@@ -64,7 +64,7 @@ export function Header() {
               Sobre
             </Link>
             <Link
-              href="/contato"
+              href="/#contato"
               className={`font-medium ${shouldShowScrolled ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-gray-200'}`}
             >
               Contato
@@ -235,7 +235,7 @@ export function Header() {
                 Sobre
               </Link>
               <Link
-                href="/contato"
+                href="/#contato"
                 className={`font-medium ${shouldShowScrolled ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-gray-200'}`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >

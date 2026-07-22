@@ -91,7 +91,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#f5a623] text-white py-2 rounded-md font-semibold hover:bg-[#e0961f] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? 'Entrando...' : 'Entrar'}
               </button>
@@ -100,7 +100,7 @@ export default function LoginPage() {
             <div className="mt-6 text-center space-y-2">
               <Link
                 href="/minha-conta/esqueci-senha"
-                className="text-sm text-blue-600 hover:underline block"
+                className="text-sm text-[#f5a623] hover:underline block"
               >
                 Esqueci minha senha
               </Link>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 Não tem uma conta?{' '}
                 <Link
                   href="/minha-conta/cadastro"
-                  className="text-blue-600 hover:underline"
+                  className="text-[#f5a623] hover:underline"
                 >
                   Cadastre-se
                 </Link>

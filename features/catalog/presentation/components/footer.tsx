@@ -25,7 +25,7 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href="https://wa.me/5511999999999"
+                href="https://wa.me/5585985661823"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-[#f5a623] transition-colors"
@@ -107,7 +107,7 @@ export function Footer() {
                 <Phone className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="hover:text-white transition-colors cursor-pointer">
-                    (11) 99999-9999
+                    (85) 98566-1823
                   </p>
                   <p className="text-xs text-gray-500">WhatsApp</p>
                 </div>
@@ -125,7 +125,7 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <Clock className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p>Seg - Sex: 8h às 18h</p>
+                  <p>Seg - Sex: 08h às 11h50 e 13h30 às 16h50</p>
                   <p className="text-xs text-gray-500">Horário de atendimento</p>
                 </div>
               </li>
@@ -138,7 +138,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-gray-400 text-center md:text-left">
               <p>&copy; 2026 JP Tecidos. Todos os direitos reservados.</p>
-              <p className="text-xs text-gray-500 mt-1">CNPJ: 00.000.000/0001-00</p>
+              <p className="text-xs text-gray-500 mt-1">CNPJ: 29.658.603/0001-67</p>
             </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 text-gray-500">

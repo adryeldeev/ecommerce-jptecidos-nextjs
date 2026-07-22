@@ -44,7 +44,6 @@ export default function ExchangePolicyPage() {
             </h2>
             <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-6">
               <li>Tecido cortado, usado ou alterado de qualquer forma</li>
-              <li>Pedido realizado após aprovação de amostra física</li>
               <li>Variações naturais de tom ou textura inerentes à matéria-prima têxtil (especialmente retalhos)</li>
               <li>Insatisfação com o produto sem defeito técnico</li>
               <li>Solicitação realizada após o prazo de 7 dias</li>
@@ -52,10 +51,10 @@ export default function ExchangePolicyPage() {
 
             <div className="bg-gray-50 p-6 rounded-lg my-8">
               <h3 className="font-semibold text-gray-900 mb-2">
-                Importante sobre amostras
+                Importante sobre variações naturais
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Como o produto é vendido por lote/kg e muitas vezes após aprovação de amostra, a responsabilidade do comprador em conferir a amostra antes de fechar pedido grande reduz o escopo de trocas. Recomendamos sempre solicitar e aprovar amostra antes de compras em volume.
+                Por serem produtos têxteis, pequenas variações de tom, textura ou gramatura entre lotes são naturais e não constituem defeito de fabricação — especialmente em retalhos e tecidos naturais. Recomendamos conferir a descrição completa do produto no catálogo (composição, gramatura, fotos) antes de fechar pedidos grandes.
               </p>
             </div>
 

@@ -6,6 +6,7 @@ import { Footer } from '@/features/catalog/presentation/components/footer';
 import { useCart } from '@/features/cart/application/use-cart';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Trash2 } from 'lucide-react';
 
 export default function CartPage() {
   const { cart, removeItem, updateQuantity, clearCart } = useCart();
@@ -124,7 +125,7 @@ export default function CartPage() {
                                 updateQuantity(item.id, newQty.toString());
                               }}
                               disabled={parseInt(item.quantidade) <= 1}
-                              className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="w-8 h-8 cursor-pointer rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               −
                             </button>
@@ -174,7 +175,7 @@ export default function CartPage() {
                                 setStockErrors({ ...stockErrors, [item.id]: '' });
                                 updateQuantity(item.id, newQty.toString());
                               }}
-                              className="w-8 h-8 rounded border border-gray-300 flex items-center justify-center hover:bg-gray-100"
+                              className="w-8 h-8 rounded border cursor-pointer border-gray-300 flex items-center justify-center hover:bg-gray-100"
                             >
                               +
                             </button>
@@ -211,9 +212,10 @@ export default function CartPage() {
                   </div>
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="text-red-600 hover:text-red-700 text-sm"
+                    aria-label="Remover item"
+                    className="text-red-600 hover:text-red-700 p-1 h-fit"
                   >
-                    Remover
+                    <Trash2 className="w-5 h-5 cursor-pointer" />
                   </button>
                 </div>
               ))}

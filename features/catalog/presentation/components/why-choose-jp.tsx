@@ -23,10 +23,10 @@ export function WhyChooseJP() {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-[32px] font-bold text-gray-900 mb-6">
-          O Mesmo padrão, lote após lote
+          O mesmo padrão, lote após lote
         </h2>
         <p className="text-gray-600 text-base max-w-3xl mb-12 leading-relaxed">
           Do pequeno pedido ao grande volume, cada rolo ou fardo passa pelos mesmos critérios de qualidade — para que sua confecção nunca tenha surpresa entre um pedido e outro.
@@ -34,9 +34,9 @@ export function WhyChooseJP() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature) => (
-            <div key={feature.number} className="flex flex-col h-full bg-gray-50 rounded-lg p-6 justify-start">
+            <div key={feature.number} className="flex flex-col h-full bg-white rounded-lg p-6 justify-start shadow-sm">
               <span className="text-4xl font-bold text-[#f5a623] mb-6">{feature.number}</span>
-              <h3 className="text-1xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
               <p className="text-gray-700 leading-relaxed text-sm overflow-hidden ">{feature.description}</p>
             </div>
           ))}

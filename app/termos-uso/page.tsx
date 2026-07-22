@@ -40,7 +40,7 @@ export default function TermsPage() {
               3. Descrição dos produtos e variações naturais
             </h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              Nosso catálogo descreve os produtos da forma mais precisa possível. No entanto, pequenas variações de tom, textura ou gramatura podem ocorrer entre lotes de produção, especialmente em retalhos e tecidos naturais. Essas variações são inerentes à matéria-prima têxtil e não constituem defeito. Recomendamos solicitar amostra antes de compras em grande volume.
+              Nosso catálogo descreve os produtos da forma mais precisa possível. No entanto, pequenas variações de tom, textura ou gramatura podem ocorrer entre lotes de produção, especialmente em retalhos e tecidos naturais. Essas variações são inerentes à matéria-prima têxtil e não constituem defeito. Recomendamos conferir atentamente a descrição completa do produto (composição, gramatura, fotos) antes de compras em grande volume.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">

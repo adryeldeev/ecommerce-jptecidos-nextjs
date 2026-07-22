@@ -1,3 +1,42 @@
+import { SITE_URL } from './site';
+
+export function generateLocalBusinessJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Store',
+    name: 'JP Tecidos',
+    description: 'Fornecimento de jeans, brim e algodão para confecções. Atacado e varejo em Fortaleza, com composição, cor e gramatura conferidas em cada lote.',
+    url: SITE_URL,
+    telephone: '+5585985661823',
+    email: 'contato@jptecidos.com.br',
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Fortaleza',
+      addressRegion: 'CE',
+      addressCountry: 'BR',
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Brasil',
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '08:00',
+        closes: '11:50',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '13:30',
+        closes: '16:50',
+      },
+    ],
+  };
+}
+
 export function generateProductJsonLd(product: any) {
   const images = product.imagens?.map((img: any) => img.url) || [];
   const priceRange = product.variacoes?.length > 0

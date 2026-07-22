@@ -14,21 +14,26 @@ export function ProductQuantitySelector({
   minQuantity = 1,
 }: ProductQuantitySelectorProps) {
   const unitLabel = unit === 'METRO' ? 'metros' : unit === 'KG' ? 'kg' : 'unidades';
-  const step = unit === 'KG' ? 0.1 : 1;
+  const step = unit === 'KG' ? 5 : 1;
 
   const handleDecrement = () => {
     if (quantity > minQuantity) {
-      onQuantityChange(Math.round((quantity - step) * 10) / 10);
+      onQuantityChange(Math.max(minQuantity, quantity - step));
     }
   };
 
   const handleIncrement = () => {
-    onQuantityChange(Math.round((quantity + step) * 10) / 10);
+    onQuantityChange(quantity + step);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
-    if (!isNaN(value) && value >= minQuantity) {
+    if (isNaN(value)) return;
+
+    if (unit === 'KG') {
+      const roundedToStep = Math.round(value / step) * step;
+      onQuantityChange(Math.max(minQuantity, roundedToStep));
+    } else if (value >= minQuantity) {
       onQuantityChange(value);
     }
   };

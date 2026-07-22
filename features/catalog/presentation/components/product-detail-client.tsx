@@ -147,7 +147,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
       <button
         onClick={handleAddToCart}
         disabled={!isVariationSelected || isOutOfStock}
-        className="w-full bg-[#DD8A05] text-white py-3 rounded-lg font-semibold hover:bg-[#c47a04] disabled:bg-gray-300 disabled:cursor-not-allowed active:scale-95 transition-all"
+        className="w-full bg-[#DD8A05] cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-[#c47a04] disabled:bg-gray-300 disabled:cursor-not-allowed active:scale-95 transition-all"
       >
         {!isVariationSelected
           ? 'Selecione uma cor'

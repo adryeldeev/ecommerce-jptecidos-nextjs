@@ -1,7 +1,7 @@
 export function Testimonials() {
   const testimonials = [
     {
-      text: "O jeans chegou exatamente como testamos na amostra. Depois de 3 lavagens industriais, manteve a cor e a estrutura firme. Isso facilitou muito nosso controle de qualidade no lote inteiro.",
+      text: "O jeans chegou exatamente como o catálogo descrevia. Depois de 3 lavagens industriais, manteve a cor e a estrutura firme. Isso facilitou muito nosso controle de qualidade no lote inteiro.",
       author: "João Mendes",
       company: "Confecção Delta Jeans",
     },
@@ -11,15 +11,26 @@ export function Testimonials() {
       company: "ProdTex Confecções",
     },
     {
-      text: "Testamos o algodão antes de fechar pedido grande. Resistiu bem ao corte e a peça final ficou com o caimento que a gente precisava, sem desperdício de tecido na produção.",
+      text: "Já fechamos vários pedidos grandes de algodão e o tecido sempre resistiu bem ao corte, com o caimento que a gente precisava, sem desperdício de tecido na produção.",
       author: "Marcos Vinícius",
       company: "Uniformes Vinícius Ltda",
     },
   ];
 
   return (
-    <section className="py-16" style={{ backgroundColor: 'rgba(221, 221, 221, 0.2)' }}>
+    <section className="py-16 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p className="text-center text-sm font-medium text-gray-500 mb-3">
+          Mais de 100 confecções já confiam na JP Tecidos, entre elas
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-12 pb-10 border-b border-gray-100">
+          {testimonials.map((testimonial) => (
+            <span key={testimonial.company} className="text-lg font-bold text-gray-400">
+              {testimonial.company}
+            </span>
+          ))}
+        </div>
+
         <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
           O que nossos parceiros dizem
         </h2>
