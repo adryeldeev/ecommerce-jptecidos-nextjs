@@ -27,7 +27,7 @@ export default function ContactPage() {
         <main className="flex-1 py-12">
           <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 text-center">
             <div className="bg-white rounded-lg border border-gray-200 p-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-4">
+              <h1 className="text-2xl font-playfair font-normal text-gray-900 mb-4">
                 Mensagem Enviada!
               </h1>
               <p className="text-gray-600 mb-6">
@@ -53,7 +53,7 @@ export default function ContactPage() {
       
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">
+          <h1 className="text-4xl font-playfair font-normal text-gray-900 mb-8 text-center">
             Entre em Contato
           </h1>
           

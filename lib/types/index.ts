@@ -4,13 +4,24 @@ export interface Category {
   id: string;
   nome: string;
   slug: string;
+  imagemUrl?: string | null;
+  totalProdutos: number;
 }
+
+export type Finalidade =
+  | 'moda'
+  | 'decoracao'
+  | 'alfaiataria'
+  | 'infantil'
+  | 'cama-banho'
+  | 'natural'
+  | 'premium'
+  | 'promocao';
 
 export interface ProductVariation {
   id: string;
   cor: string;
   corCodigo?: string;
-  largura?: string;
   preco?: string;
   estoque: string;
   sku: string;
@@ -24,6 +35,7 @@ export interface Product {
   slug: string;
   descricao?: string;
   composicao?: string;
+  largura?: string;
   gramatura?: number;
   fabricanteId?: string;
   observacoes?: string;
@@ -39,6 +51,7 @@ export interface Product {
   variacoes: ProductVariation[];
   maisProcurado?: boolean;
   lancamento?: boolean;
+  finalidades: Finalidade[];
 }
 
 export interface ProductListResponse {

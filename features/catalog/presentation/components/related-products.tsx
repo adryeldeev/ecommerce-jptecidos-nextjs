@@ -17,7 +17,7 @@ export function RelatedProducts({ products, currentProductId }: RelatedProductsP
 
   return (
     <section className="mt-16">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">Produtos relacionados</h2>
+      <h2 className="text-2xl font-playfair font-normal text-gray-900 mb-8">Produtos relacionados</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {relatedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />

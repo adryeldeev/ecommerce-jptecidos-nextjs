@@ -30,7 +30,7 @@ export function FeaturedProducts() {
               <p className="text-[16px] text-[#DD8A05] font-medium mb-2">
                 Alta Saída e Pronta Entrega
               </p>
-              <h2 className="text-[32px] font-bold text-gray-900">
+              <h2 className="text-[32px] font-playfair font-normal text-gray-900">
                 Tecidos Mais Procurados
               </h2>
             </div>
@@ -61,7 +61,7 @@ export function FeaturedProducts() {
             <p className="text-[16px] text-[#DD8A05] font-medium mb-2">
               Alta Saída e Pronta Entrega
             </p>
-            <h2 className="text-[32px] font-bold text-gray-900">
+            <h2 className="text-[32px] font-playfair font-normal text-gray-900">
               Tecidos Mais Procurados
             </h2>
           </div>

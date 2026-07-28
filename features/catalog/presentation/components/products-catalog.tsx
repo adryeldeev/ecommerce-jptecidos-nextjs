@@ -8,6 +8,7 @@ import { Pagination } from '@/features/catalog/presentation/components/paginatio
 import { useProducts } from '@/features/catalog/application/use-products';
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import type { Finalidade } from '@/lib/types';
 
 const SORT_OPTIONS = [
   { value: 'recentes', label: 'Mais recentes' },
@@ -22,7 +23,7 @@ function ProductsPageSkeleton() {
       <Header />
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          <h1 className="text-3xl font-playfair font-normal text-gray-900 mb-8">
             Catálogo de Produtos
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -60,8 +61,15 @@ function ProductsCatalogContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
+  const lancamento = searchParams.get('lancamento') === 'true' ? true : undefined;
+  const maisProcurado = searchParams.get('maisProcurado') === 'true' ? true : undefined;
+  const finalidade = (searchParams.get('finalidade') as Finalidade | null) ?? undefined;
+
   const { data, isLoading, error } = useProducts({
     ...filters,
+    lancamento,
+    maisProcurado,
+    finalidade,
     page: currentPage,
     limit: 20,
   });
@@ -81,7 +89,7 @@ function ProductsCatalogContent() {
 
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          <h1 className="text-3xl font-playfair font-normal text-gray-900 mb-8">
             Catálogo de Produtos
           </h1>
 

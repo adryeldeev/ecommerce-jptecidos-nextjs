@@ -61,7 +61,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
       unidadeMedida: product.unidadeMedida,
       variacao: hasVariations ? {
         cor: selectedVariation!.cor,
-        largura: selectedVariation!.largura ? `${selectedVariation!.largura}cm` : undefined,
+        largura: product.largura ? `${product.largura}m` : undefined,
         sku: selectedVariation!.sku,
         metragemPorPeca: selectedVariation!.metragemPorPeca,
         estoque: selectedVariation!.estoque,
@@ -74,7 +74,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   return (
     <div className="space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-normal text-gray-900 mb-2">
           {product.titulo}
         </h1>
         <div className="flex items-baseline gap-2 flex-wrap">
@@ -112,10 +112,10 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             <span className="ml-2 text-gray-900">{product.gramatura} g/m²</span>
           </div>
         )}
-        {selectedVariation?.largura && (
+        {product.largura && (
           <div>
             <span className="text-gray-500">Largura:</span>
-            <span className="ml-2 text-gray-900">{selectedVariation.largura}</span>
+            <span className="ml-2 text-gray-900">{product.largura}m</span>
           </div>
         )}
         {product.fabricanteId && (

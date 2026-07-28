@@ -30,7 +30,7 @@ export function NewProducts() {
               <p className="text-[16px] text-[#DD8A05] font-medium mb-2">
                 Recém Chegados
               </p>
-              <h2 className="text-[32px] font-bold text-gray-900">
+              <h2 className="text-[32px] font-playfair font-normal text-gray-900">
                 Lançamentos
               </h2>
             </div>
@@ -61,7 +61,7 @@ export function NewProducts() {
             <p className="text-[16px] text-[#DD8A05] font-medium mb-2">
               Recém Chegados
             </p>
-            <h2 className="text-[32px] font-bold text-gray-900">
+            <h2 className="text-[32px] font-playfair font-normal text-gray-900">
               Lançamentos
             </h2>
           </div>

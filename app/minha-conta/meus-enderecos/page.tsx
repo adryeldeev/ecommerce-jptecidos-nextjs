@@ -67,7 +67,7 @@ export default function MyAddressesPage() {
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-playfair font-normal text-gray-900">
               Meus Endereços
             </h1>
             <button

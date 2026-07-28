@@ -9,7 +9,10 @@ interface ProductCardFeaturedProps {
 export function ProductCardFeatured({ product }: ProductCardFeaturedProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-      <div className="relative aspect-square bg-gray-100">
+      <Link
+        href={`/produtos/${product.slug}`}
+        className="group relative aspect-square bg-gray-100 block"
+      >
         {product.imagens && product.imagens.length > 0 ? (
           <Image
             src={product.imagens[0].url}
@@ -35,30 +38,30 @@ export function ProductCardFeatured({ product }: ProductCardFeaturedProps) {
             </svg>
           </div>
         )}
-      </div>
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span className="bg-white text-gray-900 px-4 py-2 rounded-lg text-sm font-semibold">
+            Ver Detalhes
+          </span>
+        </div>
+      </Link>
       <div className="p-3">
         <h3 className="text-base font-semibold text-gray-900 mb-1 line-clamp-1">
           {product.titulo}
         </h3>
-        <p className="text-xs text-gray-600 mb-3 line-clamp-1">
+        <p className="text-xs text-gray-600 mb-1 line-clamp-1">
           {product.composicao || product.descricao || 'Tecido de alta qualidade'}
         </p>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-base font-bold text-[#DD8A05]">
-              R$ {parseFloat(product.precoBase).toFixed(2)}
-            </p>
-            <p className="text-xs text-gray-500">
-              por {product.unidadeMedida.toLowerCase()}
-            </p>
-          </div>
-          <Link
-            href={`/produtos/${product.slug}`}
-            className="bg-[#DD8A05] cursor-pointer text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-[#c47a04] active:scale-95 transition-all"
-          >
-            Ver Detalhes
-          </Link>
-        </div>
+        {product.largura && (
+          <p className="text-xs text-gray-500 mb-2">
+            {product.largura.replace('.', ',')}m largura
+          </p>
+        )}
+        <p className="text-base font-bold text-[#DD8A05]">
+          R$ {parseFloat(product.precoBase).toFixed(2)}
+        </p>
+        <p className="text-xs text-gray-500">
+          por {product.unidadeMedida.toLowerCase()}
+        </p>
       </div>
     </div>
   );

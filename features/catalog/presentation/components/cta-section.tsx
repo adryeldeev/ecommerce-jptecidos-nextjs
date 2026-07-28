@@ -9,6 +9,7 @@ interface CTASectionProps {
   secondaryButtonText?: string;
   secondaryButtonLink?: string;
   backgroundColor?: string;
+  dark?: boolean;
   id?: string;
 }
 
@@ -24,6 +25,7 @@ export function CTASection({
   secondaryButtonText = "Ver Ofertas",
   secondaryButtonLink = "/produtos",
   backgroundColor = "bg-white",
+  dark = false,
   id,
 }: CTASectionProps) {
   const isPrimaryExternal = primaryButtonLink.startsWith('http');
@@ -32,10 +34,10 @@ export function CTASection({
   return (
     <section id={id} className={`py-16 md:py-24 scroll-mt-20 ${backgroundColor}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0a0a0a] mb-6">
+        <h2 className={`text-3xl md:text-4xl font-playfair font-normal mb-6 ${dark ? 'text-white' : 'text-[#1C1917]'}`}>
           {title}
         </h2>
-        <p className="text-base md:text-lg text-gray-500 max-w-3xl mx-auto mb-10">
+        <p className={`text-base md:text-lg max-w-3xl mx-auto mb-10 ${dark ? 'text-gray-300' : 'text-gray-500'}`}>
           {subtitle}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

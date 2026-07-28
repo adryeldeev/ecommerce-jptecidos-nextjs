@@ -1,5 +1,5 @@
 import { api } from '@/lib/api/client';
-import { Product, ProductListResponse, Category } from '@/lib/types';
+import { Product, ProductListResponse, Category, Finalidade } from '@/lib/types';
 
 export const productApi = {
   getProducts: async (params: {
@@ -15,9 +15,10 @@ export const productApi = {
     ordenacao?: string;
     maisProcurado?: boolean;
     lancamento?: boolean;
+    finalidade?: Finalidade;
   }) => {
     const queryParams = new URLSearchParams();
-    
+
     if (params.page) queryParams.append('page', params.page.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());
     if (params.busca) queryParams.append('busca', params.busca);
@@ -30,6 +31,7 @@ export const productApi = {
     if (params.ordenacao) queryParams.append('ordenacao', params.ordenacao);
     if (params.maisProcurado !== undefined) queryParams.append('maisProcurado', params.maisProcurado.toString());
     if (params.lancamento !== undefined) queryParams.append('lancamento', params.lancamento.toString());
+    if (params.finalidade) queryParams.append('finalidade', params.finalidade);
 
     const queryString = queryParams.toString();
     const endpoint = `/catalogo/produtos${queryString ? `?${queryString}` : ''}`;

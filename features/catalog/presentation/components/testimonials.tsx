@@ -20,18 +20,7 @@ export function Testimonials() {
   return (
     <section className="py-16 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-sm font-medium text-gray-500 mb-3">
-          Mais de 100 confecções já confiam na JP Tecidos, entre elas
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 mb-12 pb-10 border-b border-gray-100">
-          {testimonials.map((testimonial) => (
-            <span key={testimonial.company} className="text-lg font-bold text-gray-400">
-              {testimonial.company}
-            </span>
-          ))}
-        </div>
-
-        <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
+        <h2 className="text-3xl font-playfair font-normal text-gray-900 mb-12 text-center">
           O que nossos parceiros dizem
         </h2>
 

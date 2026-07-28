@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { productApi } from '../infrastructure/product-api';
+import { Finalidade } from '@/lib/types';
 
 export function useProducts(params: {
   page?: number;
@@ -16,6 +17,7 @@ export function useProducts(params: {
   ordenacao?: string;
   maisProcurado?: boolean;
   lancamento?: boolean;
+  finalidade?: Finalidade;
 }) {
   return useQuery({
     queryKey: ['products', params],

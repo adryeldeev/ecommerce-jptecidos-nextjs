@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { QueryClientProvider } from "@/lib/providers/query-provider";
 import { WhatsAppButton } from "@/features/catalog/presentation/components/whatsapp-button";
@@ -10,6 +10,12 @@ const inter = Inter({
   weight: ['300', '400', '500', '600', '700', '800'],
   subsets: ["latin"],
   variable: "--font-inter",
+});
+
+const playfairDisplay = Playfair_Display({
+  weight: ['400', '500', '600'],
+  subsets: ["latin"],
+  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -48,9 +54,9 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} h-full antialiased scroll-smooth`}
+      className={`${inter.variable} ${playfairDisplay.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-inter">
+      <body className="min-h-full flex flex-col font-sans">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}

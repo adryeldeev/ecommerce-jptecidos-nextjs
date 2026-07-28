@@ -49,7 +49,7 @@ export default function LoginPage() {
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-md px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg border border-gray-200 p-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            <h1 className="text-2xl font-playfair font-normal text-gray-900 mb-6 text-center">
               Entrar na Conta
             </h1>
 

@@ -18,7 +18,7 @@ export function CategoriesSection() {
     return (
       <section className="py-16 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Categorias</h2>
+          <h2 className="text-3xl font-playfair font-normal text-gray-900 mb-8">Categorias</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="h-[300px] rounded-lg bg-gray-200 animate-pulse" />
@@ -36,7 +36,7 @@ export function CategoriesSection() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">
+        <h2 className="text-3xl font-playfair font-normal text-gray-900 mb-8">
           Categorias
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -47,7 +47,7 @@ export function CategoriesSection() {
               className="group relative h-[300px] rounded-lg overflow-hidden"
             >
               <Image
-                src={FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]}
+                src={category.imagemUrl || FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]}
                 alt={category.nome}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -57,6 +57,9 @@ export function CategoriesSection() {
                 <h3 className="text-xl font-semibold text-white">
                   {category.nome}
                 </h3>
+                <p className="text-sm text-white/80">
+                  {category.totalProdutos} {category.totalProdutos === 1 ? 'produto' : 'produtos'}
+                </p>
               </div>
             </Link>
           ))}

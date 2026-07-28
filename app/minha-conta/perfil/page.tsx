@@ -102,7 +102,7 @@ export default function ProfilePage() {
       
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          <h1 className="text-3xl font-playfair font-normal text-gray-900 mb-8">
             Meus Dados
           </h1>
           

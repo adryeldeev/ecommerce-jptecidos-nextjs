@@ -2,7 +2,9 @@ import { Header } from '@/features/catalog/presentation/components/header';
 import { Footer } from '@/features/catalog/presentation/components/footer';
 import { FeaturedProducts } from '@/features/catalog/presentation/components/featured-products';
 import { NewProducts } from '@/features/catalog/presentation/components/new-products';
-import { WhyChooseJP } from '@/features/catalog/presentation/components/why-choose-jp';
+import { AtelierBanner } from '@/features/catalog/presentation/components/atelier-banner';
+import { CategoryIcons } from '@/features/catalog/presentation/components/category-icons';
+import { CategoryMarquee } from '@/features/catalog/presentation/components/category-marquee';
 import { CategoriesSection } from '@/features/catalog/presentation/components/categories-section';
 import { Testimonials } from '@/features/catalog/presentation/components/testimonials';
 import { CTASection } from '@/features/catalog/presentation/components/cta-section';
@@ -16,7 +18,7 @@ export default function Home() {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative -mt-8 md:-mt-16 bg-black overflow-hidden">
+        <section className="relative -mt-8 md:-mt-16 bg-[#1C1917] overflow-hidden">
           {/* Video Background — versão leve por dispositivo (sem áudio) + poster pra evitar tela em branco */}
           <div className="absolute inset-0">
             <video
@@ -30,21 +32,23 @@ export default function Home() {
               <source src="/hero-mobile.webm" type="video/webm" media="(max-width: 767px)" />
               <source src="/hero-desktop.webm" type="video/webm" />
             </video>
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-[#1C1917]/50" />
           </div>
 
           {/* Content */}
           <div className="relative z-10 py-20 md:py-28">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
               <div className="max-w-3xl">
-                <h1 className="text-3xl sm:text-4xl md:text-[44px] font-bold text-white mb-6 leading-tight">
-                 Tecido que não compromete o resultado da sua peça.
+                <h1 className="text-3xl sm:text-4xl md:text-[44px] font-playfair font-normal text-white mb-6 leading-tight">
+                  Tecidos que
+                  <br />
+                  inspiram criar.
                 </h1>
                 <p className="text-sm sm:text-base text-white mb-8 leading-relaxed">
-                  Fio resistente, tingimento uniforme e composição
-                  garantida em cada lote. Jeans, brim e algodão prontos
-                  para aguentar corte, costura e lavagem industrial
-                  sem perder padrão.
+                  Composição garantida, cor uniforme e fio resistente
+                  em cada lote — pra quem costura em casa ou produz
+                  em escala. Jeans, brim e algodão prontos para
+                  qualquer projeto.
                 </p>
                 <div className="flex gap-4">
                   <Link
@@ -85,17 +89,20 @@ export default function Home() {
           </div>
         </section>
 
+        <CategoryIcons />
+
         <FeaturedProducts />
 
-        <WhyChooseJP />
+        <AtelierBanner />
 
         <NewProducts />
+        <CategoryMarquee />
 
         <CategoriesSection />
 
         <Testimonials />
 
-        <CTASection id="contato" backgroundColor="bg-gray-50" />
+        <CTASection id="contato" backgroundColor="bg-[#1C1917]" dark />
 
         {/* Selos de pagamento */}
         <section className="py-10 bg-white border-t border-gray-100">
