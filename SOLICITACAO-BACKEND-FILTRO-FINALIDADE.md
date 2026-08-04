@@ -202,7 +202,7 @@ Resultado prático: a página de catálogo em produção mostra "Erro ao carrega
 Adicionar à lista de origens permitidas no CORS do backend:
 
 ```
-https://<PREENCHER: domínio de produção do Vercel>
+https://ecommerce-jptecidos-nextjs.vercel.app/
 ```
 
 **Recomendação**: como o Vercel gera um subdomínio novo pra cada deploy de preview (ex: `projeto-git-branch-usuario.vercel.app`), também é útil liberar um padrão coringa pra esses domínios de preview, além do domínio de produção fixo. Se o framework de CORS usado (ex: `cors` do Express/Nest) suportar regex/função de validação, algo como:
