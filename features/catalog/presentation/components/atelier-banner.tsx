@@ -1,10 +1,5 @@
+import Image from 'next/image';
 import Link from 'next/link';
-
-const PLACEHOLDER_LABEL = (
-  <span className="absolute top-3 right-3 z-10 text-[10px] uppercase tracking-wide text-white/40">
-    Foto ilustrativa
-  </span>
-);
 
 export function AtelierBanner() {
   return (
@@ -14,9 +9,16 @@ export function AtelierBanner() {
           {/* Banner principal */}
           <Link
             href="/produtos"
-            className="group relative lg:col-span-2 rounded-lg overflow-hidden min-h-[420px] flex items-end p-8 bg-gradient-to-br from-[#3d3530] to-[#1C1917]"
+            className="group relative lg:col-span-2 rounded-lg overflow-hidden min-h-[420px] flex items-end p-8"
           >
-            {PLACEHOLDER_LABEL}
+            <Image
+              src="/atelier-principal.webp"
+              alt="Costureira costurando tecido vermelho à máquina"
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 1024px) 100vw, 66vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <div className="relative z-10 max-w-md">
               <p className="text-[#f5a623] text-sm font-semibold uppercase tracking-wide mb-2">
                 Destaque
@@ -37,9 +39,16 @@ export function AtelierBanner() {
           <div className="flex flex-col gap-4">
             <Link
               href="/produtos?lancamento=true"
-              className="group relative flex-1 min-h-[200px] rounded-lg overflow-hidden flex items-end p-6 bg-gradient-to-br from-[#DD8A05]/40 to-[#1C1917]"
+              className="group relative flex-1 min-h-[200px] rounded-lg overflow-hidden flex items-end p-6"
             >
-              {PLACEHOLDER_LABEL}
+              <Image
+                src="/atelier-novos-tecidos.webp"
+                alt="Tecidos coloridos dobrados empilhados em prateleira"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="relative z-10">
                 <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mb-1">
                   Chegadas
@@ -53,9 +62,16 @@ export function AtelierBanner() {
 
             <Link
               href="/produtos?maisProcurado=true"
-              className="group relative flex-1 min-h-[200px] rounded-lg overflow-hidden flex items-end p-6 bg-gradient-to-br from-gray-600 to-gray-800"
+              className="group relative flex-1 min-h-[200px] rounded-lg overflow-hidden flex items-end p-6"
             >
-              {PLACEHOLDER_LABEL}
+              <Image
+                src="/atelier-mais-procurados.webp"
+                alt="Tecido jeans dobrado em close-up"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="relative z-10">
                 <p className="text-white/70 text-xs font-semibold uppercase tracking-wide mb-1">
                   Alta procura
