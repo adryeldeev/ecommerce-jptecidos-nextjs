@@ -1,9 +1,10 @@
 # Solicitações Backend — Frontend Storefront
 
-Duas pendências de backend levantadas durante o trabalho no frontend. Seguem cada uma com contexto, escopo e critério de aceite.
+Pendências de backend levantadas durante o trabalho no frontend. Seguem cada uma com contexto, escopo e critério de aceite.
 
-- **Solicitação 1**: Campo "Finalidade" no Produto (filtro dos ícones da home)
-- **Solicitação 2**: Contagem de produtos por categoria (seção "Categorias" da home)
+- **Solicitação 1** ✅ concluída: Campo "Finalidade" no Produto (filtro dos ícones da home)
+- **Solicitação 2** ✅ concluída: Contagem de produtos por categoria (seção "Categorias" da home)
+- **Solicitação 3** 🔴 urgente: CORS bloqueando o domínio de produção do frontend (Vercel) — catálogo está fora do ar em produção por causa disso agora mesmo
 
 ---
 
@@ -165,3 +166,71 @@ Dá pra calcular isso no frontend fazendo uma chamada extra por categoria (`GET 
 ## 6) Aviso para o Frontend (quando pronto)
 
 Quando esse campo estiver disponível, avisar o frontend para exibir "X produtos" em cada card da seção "Categorias" da home (`categories-section.tsx`), usando `category.totalProdutos`.
+
+---
+
+# Solicitação 3 — CORS bloqueando o domínio de produção (URGENTE)
+
+## 1) Informações Básicas
+
+- ID: FE-BACKEND-003
+- Título: Adicionar domínio do Vercel na lista de origens CORS permitidas
+- Tipo: bugfix (backend) — **bloqueando o site em produção agora**
+- Solicitante: Frontend (storefront)
+- Endpoint(s) relacionado(s): todos (configuração global de CORS da API)
+
+## 2) Motivação
+
+O frontend foi publicado no Vercel e a API já responde normalmente quando testada direto (via curl/Postman), mas o navegador bloqueia toda chamada feita pelo site em produção. Isso acontece porque o CORS da API só libera `http://localhost:3000` — qualquer outra origem (como o domínio do Vercel) recebe a resposta **sem** o header `Access-Control-Allow-Origin`, e o navegador descarta a resposta antes do JavaScript conseguir ler.
+
+Confirmado comparando as duas chamadas:
+
+```
+Origin: http://localhost:3000
+→ access-control-allow-origin: http://localhost:3000   (liberado)
+
+Origin: https://<dominio-do-vercel>
+→ (nenhum header access-control-allow-origin)            (bloqueado)
+```
+
+Resultado prático: a página de catálogo em produção mostra "Erro ao carregar produtos" — não é falha na API, é o navegador recusando a resposta por causa do CORS.
+
+## 3) Escopo Funcional
+
+### O que precisa mudar
+
+Adicionar à lista de origens permitidas no CORS do backend:
+
+```
+https://<PREENCHER: domínio de produção do Vercel>
+```
+
+**Recomendação**: como o Vercel gera um subdomínio novo pra cada deploy de preview (ex: `projeto-git-branch-usuario.vercel.app`), também é útil liberar um padrão coringa pra esses domínios de preview, além do domínio de produção fixo. Se o framework de CORS usado (ex: `cors` do Express/Nest) suportar regex/função de validação, algo como:
+
+```
+/^https:\/\/ecommerce-jptecidos-nextjs.*\.vercel\.app$/
+```
+
+cobre produção + todos os previews automaticamente, sem precisar atualizar a lista toda vez que um novo preview for gerado.
+
+Quando o domínio próprio (`jptecidos.com.br` ou o que for definido) for comprado e conectado, esse também precisa entrar na lista.
+
+### Fora de escopo
+
+- Não precisa liberar CORS pra `*` (todas as origens) — isso abriria a API pra qualquer site, sem necessidade.
+
+## 4) Critérios de Aceite (Given/When/Then)
+
+1. Given uma requisição vem com `Origin: https://<domínio de produção do Vercel>`, When a API responde, Then o header `Access-Control-Allow-Origin` reflete essa origem.
+2. Given uma requisição vem de um domínio de preview do Vercel (se o padrão coringa for implementado), When a API responde, Then também é liberado.
+3. Given uma requisição vem de uma origem não listada/fora do padrão, When a API responde, Then continua **sem** liberar (CORS não pode virar `*`).
+
+## 5) Definição de Pronto (DoD)
+
+- [ ] Domínio de produção do Vercel adicionado à lista de origens CORS.
+- [ ] (Opcional, recomendado) Padrão coringa pra domínios de preview do Vercel.
+- [ ] Testado: catálogo carrega normalmente no site publicado, sem erro no console do navegador.
+
+## 6) Aviso para o Frontend (quando pronto)
+
+Nenhuma mudança de código necessária do lado do frontend — assim que o CORS for ajustado, o site em produção passa a funcionar automaticamente.

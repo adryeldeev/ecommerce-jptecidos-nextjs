@@ -20,7 +20,7 @@ export function CTASection({
     </>
   ),
   subtitle = "Composição, cor e gramatura conferidas em cada lote antes de chegar até você. Peça jeans, brim ou algodão com a confiança de receber exatamente o padrão que sua confecção precisa.",
-  primaryButtonText = "Falar no Whatsapp",
+  primaryButtonText = "Fazer Pedidos",
   primaryButtonLink = "https://wa.me/5585985661823",
   secondaryButtonText = "Ver Ofertas",
   secondaryButtonLink = "/produtos",

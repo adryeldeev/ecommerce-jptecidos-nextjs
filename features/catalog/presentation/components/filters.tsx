@@ -1,5 +1,7 @@
 'use client';
 
+import { useCategories } from '@/features/catalog/application/use-products';
+
 interface FiltersProps {
   filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
@@ -20,6 +22,8 @@ const inputClasses =
   'w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#f5a623] focus:outline-none focus:ring-1 focus:ring-[#f5a623]';
 
 export function Filters({ filters, onFilterChange }: FiltersProps) {
+  const { data: categories = [] } = useCategories();
+
   const handleFilterChange = (key: keyof FilterState, value: string | boolean) => {
     onFilterChange({ ...filters, [key]: value });
   };
@@ -52,10 +56,11 @@ export function Filters({ filters, onFilterChange }: FiltersProps) {
           className={`${inputClasses} py-2.5 bg-white`}
         >
           <option value="">Todas</option>
-          <option value="algodao">Algodão</option>
-          <option value="seda">Seda</option>
-          <option value="linho">Linho</option>
-          <option value="poliester">Poliéster</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.slug}>
+              {category.nome}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -98,9 +103,9 @@ export function Filters({ filters, onFilterChange }: FiltersProps) {
           className={inputClasses}
         >
           <option value="">Todas</option>
-          <option value="metro">Metro</option>
-          <option value="centimetro">Centímetro</option>
-          <option value="peça">Peça</option>
+          <option value="METRO">Metro</option>
+          <option value="KG">Kg</option>
+          <option value="UNIDADE">Unidade</option>
         </select>
       </div>
 
