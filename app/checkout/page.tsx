@@ -11,11 +11,12 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { type AddressFormData } from '@/lib/validations/address';
 import { useRouter } from 'next/navigation';
+import type { FreightQuoteResponse } from '@/lib/types';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart } = useCart();
-  const [selectedFreight, setSelectedFreight] = useState<any>(null);
+  const [selectedFreight, setSelectedFreight] = useState<FreightQuoteResponse | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 
@@ -131,7 +132,7 @@ export default function CheckoutPage() {
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h2 className="text-xl font-semibold mb-4">Opções de Frete</h2>
                   <div className="space-y-3">
-                    {freightMutation.data.map((option: any, index: number) => (
+                    {freightMutation.data.map((option: FreightQuoteResponse, index: number) => (
                       <label
                         key={index}
                         className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-colors ${
@@ -208,7 +209,7 @@ export default function CheckoutPage() {
                           {item.produtoTitulo}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {item.variacao.cor} - Qtd: {item.quantidade}
+                          {item.variacao?.cor && `${item.variacao.cor} - `}Qtd: {item.quantidade}
                         </p>
                       </div>
                       <p className="text-sm font-semibold">

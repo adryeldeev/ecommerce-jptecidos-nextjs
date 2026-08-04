@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { clearAuthToken } from '@/lib/api/client';
 
 interface User {
   nome: string;
@@ -22,7 +23,7 @@ export const useAuth = create<AuthState>()(
       isAuthenticated: false,
       setUser: (user) => set({ user, isAuthenticated: !!user }),
       logout: () => {
-        document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
+        clearAuthToken();
         set({ user: null, isAuthenticated: false });
       },
     }),

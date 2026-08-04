@@ -7,10 +7,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordSchema, type ResetPasswordFormData } from '@/lib/validations/auth';
 import { authApi } from '@/features/account/infrastructure/auth-api';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <Footer />
+        </div>
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token') || '';
   const [error, setError] = useState<string | null>(null);
@@ -70,7 +85,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      
+
       <main className="flex-1 py-12">
         <div className="mx-auto max-w-md px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg border border-gray-200 p-8">

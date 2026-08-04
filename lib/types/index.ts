@@ -38,6 +38,7 @@ export interface Product {
   largura?: string;
   gramatura?: number;
   fabricanteId?: string;
+  fabricante?: { nome: string } | null;
   observacoes?: string;
   pesoGramas?: number;
   dimensaoAlturaCm?: number;
@@ -63,10 +64,12 @@ export interface ProductListResponse {
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken: string;
   usuario: {
+    id: string;
     nome: string;
     email: string;
+    ehAdmin: boolean;
   };
 }
 
@@ -106,7 +109,7 @@ export interface FreightQuoteResponse {
 }
 
 export interface OrderItem {
-  produtoVariacaoId: string;
+  produtoVariacaoId?: string;
   quantidade: string;
 }
 

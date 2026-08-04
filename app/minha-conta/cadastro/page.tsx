@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormData } from '@/lib/validations/auth';
 import { authApi } from '@/features/account/infrastructure/auth-api';
+import { setAuthToken } from '@/lib/api/client';
+import { useAuth } from '@/features/account/application/use-auth';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -27,9 +29,10 @@ export default function RegisterPage() {
 
     try {
       const response = await authApi.register(data);
-      // TODO: Armazenar token em cookie HttpOnly via BFF
-      console.log('Register successful:', response);
-      window.location.href = '/minha-conta/meus-pedidos';
+      setAuthToken(response.accessToken);
+      useAuth.getState().setUser(response.usuario);
+
+      window.location.assign('/minha-conta/meus-pedidos');
     } catch (err) {
       setError('Erro ao criar conta. Tente novamente.');
     } finally {

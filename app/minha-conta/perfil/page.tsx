@@ -63,7 +63,7 @@ export default function ProfilePage() {
       setProfileError(null);
       setTimeout(() => setProfileSuccess(false), 3000);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       setProfileError(error.message || 'Erro ao atualizar perfil');
       setProfileSuccess(false);
     },
@@ -77,7 +77,7 @@ export default function ProfilePage() {
       resetPassword();
       setTimeout(() => setPasswordSuccess(false), 3000);
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       setPasswordError(error.message || 'Erro ao alterar senha');
       setPasswordSuccess(false);
     },

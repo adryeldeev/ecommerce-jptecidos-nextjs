@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth';
 import { authApi } from '@/features/account/infrastructure/auth-api';
+import { setAuthToken } from '@/lib/api/client';
+import { useAuth } from '@/features/account/application/use-auth';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -27,14 +29,10 @@ export default function LoginPage() {
 
     try {
       const response = await authApi.login(data);
-      // TODO: Armazenar token em cookie HttpOnly via BFF
-      console.log('Login successful:', response);
-      
-      // Salvar dados do usuário no Zustand
-      const { useAuth } = await import('@/features/account/application/use-auth');
+      setAuthToken(response.accessToken);
       useAuth.getState().setUser(response.usuario);
-      
-      window.location.href = '/minha-conta/meus-pedidos';
+
+      window.location.assign('/minha-conta/meus-pedidos');
     } catch (err) {
       setError('Email ou senha inválidos');
     } finally {

@@ -1,4 +1,5 @@
 import { SITE_URL } from './site';
+import type { Product } from '@/lib/types';
 
 export function generateLocalBusinessJsonLd() {
   return {
@@ -37,13 +38,13 @@ export function generateLocalBusinessJsonLd() {
   };
 }
 
-export function generateProductJsonLd(product: any) {
-  const images = product.imagens?.map((img: any) => img.url) || [];
+export function generateProductJsonLd(product: Product) {
+  const images = product.imagens?.map((img) => img.url) || [];
   const priceRange = product.variacoes?.length > 0
     ? (() => {
         const prices = product.variacoes
-          .map((v: any) => v.preco ?? product.precoBase)
-          .filter((p: any) => p !== undefined);
+          .map((v) => parseFloat(v.preco ?? product.precoBase))
+          .filter((p) => !isNaN(p));
         if (prices.length === 0) return product.precoBase;
         const min = Math.min(...prices);
         const max = Math.max(...prices);
@@ -66,7 +67,7 @@ export function generateProductJsonLd(product: any) {
       '@type': 'Offer',
       price: typeof priceRange === 'string' ? priceRange.split('-')[0] : priceRange,
       priceCurrency: 'BRL',
-      availability: product.variacoes?.some((v: any) => v.estoque > 0)
+      availability: product.variacoes?.some((v) => parseFloat(v.estoque) > 0)
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
     },

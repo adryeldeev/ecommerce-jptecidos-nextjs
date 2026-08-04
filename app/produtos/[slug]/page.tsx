@@ -7,6 +7,7 @@ import { productApi } from '@/features/catalog/infrastructure/product-api';
 import { generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo/json-ld';
 import { Product } from '@/lib/types';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
 interface ProductPageProps {
   params: Promise<{
@@ -92,18 +93,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <nav className="mb-6 md:mb-8 text-xs md:text-sm text-gray-600">
               <ol className="flex items-center gap-1 md:gap-2 flex-wrap">
                 <li>
-                  <a href="/" className="hover:text-gray-900">
+                  <Link href="/" className="hover:text-gray-900">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>/</li>
                 <li>
-                  <a
+                  <Link
                     href={`/produtos?categoria=${product.categoria.slug}`}
                     className="hover:text-gray-900"
                   >
                     {product.categoria.nome}
-                  </a>
+                  </Link>
                 </li>
                 <li>/</li>
                 <li className="text-gray-900 truncate max-w-[150px] sm:max-w-[200px] md:max-w-none">{product.titulo}</li>

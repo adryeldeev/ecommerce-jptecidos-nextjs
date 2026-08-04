@@ -13,13 +13,26 @@ export class ApiError extends Error {
 
 function getCookie(name: string): string | undefined {
   if (typeof document === 'undefined') return undefined;
-  
+
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) {
     return parts.pop()?.split(';').shift();
   }
   return undefined;
+}
+
+const AUTH_COOKIE_NAME = 'auth_token';
+const AUTH_COOKIE_MAX_AGE_DAYS = 7;
+
+export function setAuthToken(token: string) {
+  if (typeof document === 'undefined') return;
+  document.cookie = `${AUTH_COOKIE_NAME}=${token}; path=/; max-age=${AUTH_COOKIE_MAX_AGE_DAYS * 24 * 60 * 60}; SameSite=Lax`;
+}
+
+export function clearAuthToken() {
+  if (typeof document === 'undefined') return;
+  document.cookie = `${AUTH_COOKIE_NAME}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
 }
 
 export async function fetchWithAuth(endpoint: string, options?: RequestInit) {
