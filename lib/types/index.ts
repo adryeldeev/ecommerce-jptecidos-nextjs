@@ -102,10 +102,16 @@ export interface FreightQuoteRequest {
   estado?: string;
 }
 
-export interface FreightQuoteResponse {
+export interface FreightOption {
   metodo: string;
+  transportadora: string;
+  prazoDias: number;
   valor: string;
-  prazo: number;
+}
+
+export interface FreightQuoteResponse {
+  options: FreightOption[];
+  selected: FreightOption;
 }
 
 export interface OrderItem {

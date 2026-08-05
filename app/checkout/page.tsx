@@ -12,12 +12,12 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { type AddressFormData } from '@/lib/validations/address';
 import { useRouter } from 'next/navigation';
-import type { FreightQuoteResponse } from '@/lib/types';
+import type { FreightOption } from '@/lib/types';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart } = useCart();
-  const [selectedFreight, setSelectedFreight] = useState<FreightQuoteResponse | null>(null);
+  const [selectedFreight, setSelectedFreight] = useState<FreightOption | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
@@ -144,11 +144,11 @@ export default function CheckoutPage() {
               </div>
 
               {/* Opções de frete */}
-              {freightMutation.data && freightMutation.data.length > 0 && (
+              {freightMutation.data?.options && freightMutation.data.options.length > 0 && (
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h2 className="text-xl font-semibold mb-4">Opções de Frete</h2>
                   <div className="space-y-3">
-                    {freightMutation.data.map((option: FreightQuoteResponse, index: number) => (
+                    {freightMutation.data.options.map((option, index) => (
                       <label
                         key={index}
                         className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-colors ${
@@ -167,9 +167,9 @@ export default function CheckoutPage() {
                             className="h-4 w-4 accent-[#f5a623]"
                           />
                           <div>
-                            <p className="font-medium">{option.metodo}</p>
+                            <p className="font-medium">{option.metodo} · {option.transportadora}</p>
                             <p className="text-sm text-gray-500">
-                              Prazo: {option.prazo} dias úteis
+                              Prazo: {option.prazoDias} dias úteis
                             </p>
                           </div>
                         </div>
