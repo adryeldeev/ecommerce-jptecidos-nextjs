@@ -4,6 +4,7 @@ import { Header } from '@/features/catalog/presentation/components/header';
 import { Footer } from '@/features/catalog/presentation/components/footer';
 import { useCart } from '@/features/cart/application/use-cart';
 import { AddressForm } from '@/features/checkout/presentation/components/address-form';
+import { PaymentBrick } from '@/features/checkout/presentation/components/payment-brick';
 import { freightApi } from '@/features/checkout/infrastructure/freight-api';
 import { orderApi } from '@/features/checkout/infrastructure/order-api';
 import { addressApi } from '@/features/account/infrastructure/address-api';
@@ -17,8 +18,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { cart } = useCart();
   const [selectedFreight, setSelectedFreight] = useState<FreightQuoteResponse | null>(null);
-  const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const { data: addresses = [] } = useQuery({
     queryKey: ['addresses'],
@@ -62,21 +63,36 @@ export default function CheckoutPage() {
     });
   };
 
-  const handleCompleteOrder = () => {
-    if (!selectedAddress || !selectedPayment || !selectedFreight) {
-      alert('Preencha todos os campos obrigatórios');
-      return;
+  const totalAmount = selectedFreight
+    ? parseFloat(cart.subtotal) + parseFloat(selectedFreight.valor || '0')
+    : parseFloat(cart.subtotal);
+
+  const handlePaymentSubmit = async (paymentFormData: Record<string, unknown>) => {
+    setPaymentError(null);
+
+    if (!selectedAddress || !selectedFreight) {
+      setPaymentError('Selecione um endereço e uma opção de frete antes de pagar.');
+      throw new Error('Endereço ou frete não selecionado');
     }
 
-    orderMutation.mutate({
-      enderecoId: selectedAddress,
-      freteMetodo: selectedFreight.metodo,
-      metodoPagamento: selectedPayment,
-      itens: cart.itens.map((item) => ({
-        produtoVariacaoId: item.produtoVariacaoId,
-        quantidade: item.quantidade,
-      })),
-    });
+    try {
+      // onSuccess do orderMutation já redireciona pra /pedido-sucesso
+      await orderMutation.mutateAsync({
+        enderecoId: selectedAddress,
+        freteMetodo: selectedFreight.metodo,
+        metodoPagamento: String(paymentFormData.payment_method_id ?? ''),
+        paymentProvider: 'mercadopago',
+        paymentMethodId: String(paymentFormData.payment_method_id ?? ''),
+        pagamento: paymentFormData,
+        itens: cart.itens.map((item) => ({
+          produtoVariacaoId: item.produtoVariacaoId,
+          quantidade: item.quantidade,
+        })),
+      });
+    } catch (err) {
+      setPaymentError('Não foi possível processar o pagamento. Tente novamente.');
+      throw err;
+    }
   };
 
   return (
@@ -168,30 +184,21 @@ export default function CheckoutPage() {
               {selectedFreight && (
                 <div className="bg-white rounded-lg border border-gray-200 p-6">
                   <h2 className="text-xl font-semibold mb-4">Forma de Pagamento</h2>
-                  <div className="space-y-3">
-                    {[
-                      { id: 'pix', name: 'PIX' },
-                      { id: 'credit_card', name: 'Cartão de Crédito' },
-                      { id: 'boleto', name: 'Boleto' },
-                    ].map((method) => (
-                      <label
-                        key={method.id}
-                        className="flex items-center justify-between p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-gray-300"
-                      >
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="radio"
-                            name="payment"
-                            value={method.id}
-                            checked={selectedPayment === method.id}
-                            onChange={(e) => setSelectedPayment(e.target.value)}
-                            className="h-4 w-4 accent-[#f5a623]"
-                          />
-                          <span className="font-medium">{method.name}</span>
+
+                  {!selectedAddress ? (
+                    <p className="text-sm text-gray-500">
+                      Selecione um endereço de entrega acima para continuar.
+                    </p>
+                  ) : (
+                    <>
+                      {paymentError && (
+                        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md mb-4 text-sm">
+                          {paymentError}
                         </div>
-                      </label>
-                    ))}
-                  </div>
+                      )}
+                      <PaymentBrick amount={totalAmount} onSubmit={handlePaymentSubmit} />
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -245,13 +252,11 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                <button
-                  onClick={handleCompleteOrder}
-                  disabled={!selectedFreight || !selectedPayment || !selectedAddress || orderMutation.isPending}
-                  className="w-full bg-[#f5a623] text-white py-3 rounded-md font-semibold hover:bg-[#e0961f] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {orderMutation.isPending ? 'Processando...' : 'Finalizar Pedido'}
-                </button>
+                {!selectedFreight && (
+                  <p className="text-sm text-gray-500 text-center">
+                    Selecione um endereço e uma opção de frete pra ver as formas de pagamento.
+                  </p>
+                )}
               </div>
             </div>
           </div>

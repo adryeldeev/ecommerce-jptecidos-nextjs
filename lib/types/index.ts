@@ -119,6 +119,9 @@ export interface CreateOrderRequest {
   metodoPagamento: string;
   paymentMethodId?: string;
   paymentProvider?: string;
+  // Dados brutos retornados pelo Payment Brick (Mercado Pago) — o backend
+  // usa isso pra processar o pagamento de verdade via access token.
+  pagamento?: Record<string, unknown>;
   itens: OrderItem[];
 }
 

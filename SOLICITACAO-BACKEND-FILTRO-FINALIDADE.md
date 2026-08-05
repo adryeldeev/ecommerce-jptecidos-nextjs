@@ -5,6 +5,7 @@ Pendências de backend levantadas durante o trabalho no frontend. Seguem cada um
 - **Solicitação 1** ✅ concluída: Campo "Finalidade" no Produto (filtro dos ícones da home)
 - **Solicitação 2** ✅ concluída: Contagem de produtos por categoria (seção "Categorias" da home)
 - **Solicitação 3** 🔴 urgente: CORS bloqueando o domínio de produção do frontend (Vercel) — catálogo está fora do ar em produção por causa disso agora mesmo
+- **Solicitação 4**: Processar pagamento (Mercado Pago) na criação do pedido
 
 ---
 
@@ -234,3 +235,98 @@ Quando o domínio próprio (`jptecidos.com.br` ou o que for definido) for compra
 ## 6) Aviso para o Frontend (quando pronto)
 
 Nenhuma mudança de código necessária do lado do frontend — assim que o CORS for ajustado, o site em produção passa a funcionar automaticamente.
+
+---
+
+# Solicitação 4 — Processar pagamento (Mercado Pago) na criação do pedido
+
+## 1) Informações Básicas
+
+- ID: FE-BACKEND-004
+- Título: `POST /pedidos` precisa processar o pagamento via Mercado Pago usando o Access Token
+- Tipo: feature (backend) — **envolve credencial sensível, só pode ser feito no backend**
+- Solicitante: Frontend (storefront)
+- Endpoint(s) relacionado(s): `POST /pedidos`
+
+## 2) Motivação
+
+O checkout foi integrado com o **Payment Brick** do Mercado Pago (Checkout Bricks — SDK `@mercadopago/sdk-react`) no frontend, usando a **Public Key**:
+
+```
+TEST-5eb72d0d-4bb0-48e7-9d61-13d3fa806635
+```
+
+A Public Key é segura pra ficar no frontend. Já o **Access Token** é privado e só pode ser usado no backend — o frontend nunca vai ter acesso a ele. **O valor do token não está neste documento de propósito** (este arquivo fica num repositório Git, e credencial não deve ser commitada em lugar nenhum, nem em teste). O token de teste já foi passado por fora — configure como variável de ambiente direto no serviço do backend (nunca commitado no código).
+
+O Payment Brick, quando o cliente confirma o pagamento na tela, gera um objeto (`formData`) com os dados necessários pra processar a cobrança (token do cartão quando aplicável, `payment_method_id`, valor, dados do pagador etc.). O frontend está enviando esse objeto **inteiro, sem alterar nada**, dentro do corpo de `POST /pedidos`, no campo `pagamento`.
+
+## 3) Escopo Funcional
+
+### O que o frontend já manda hoje pra `POST /pedidos`
+
+```json
+{
+  "enderecoId": "uuid-do-endereco",
+  "freteMetodo": "SEDEX",
+  "metodoPagamento": "pix",
+  "paymentProvider": "mercadopago",
+  "paymentMethodId": "pix",
+  "pagamento": {
+    "paymentType": "bank_transfer",
+    "selectedPaymentMethod": "bank_transfer",
+    "formData": {
+      "transaction_amount": 124.95,
+      "payment_method_id": "pix",
+      "payer": { "email": "cliente@exemplo.com", "identification": { "type": "CPF", "number": "..." } }
+    }
+  },
+  "itens": [
+    { "produtoVariacaoId": "uuid-variacao", "quantidade": "5" }
+  ]
+}
+```
+
+> Nota: a estrutura exata de `pagamento` varia conforme o método escolhido (cartão inclui `token`, `installments`, `issuer_id`; PIX e boleto têm campos próprios). É literalmente o que o Payment Brick devolve no `onSubmit` — a [documentação oficial do Payment Brick](https://www.mercadopago.com/developers/en/docs/checkout-bricks/payment-brick/payment-submission/other-payment-methods) mostra o formato completo por método de pagamento.
+
+### O que precisa mudar no backend
+
+Ao receber `POST /pedidos` com o campo `pagamento` preenchido:
+
+1. Usar o **Access Token** (nunca a Public Key) pra chamar a API de pagamentos do Mercado Pago server-side:
+   ```
+   POST https://api.mercadopago.com/v1/payments
+   Authorization: Bearer <ACCESS_TOKEN>
+   ```
+   passando os dados relevantes de `pagamento.formData` (transaction_amount, payment_method_id, token quando houver, payer, installments, etc.).
+2. Se o Mercado Pago aprovar/aceitar o pagamento (`status: approved` pra cartão, ou `pending`/`in_process` pra PIX e boleto, que são aprovados depois), **criar o pedido** no banco associando o `payment_id` retornado pelo Mercado Pago.
+3. Se o Mercado Pago rejeitar (`status: rejected`), **não criar o pedido** — retornar erro pro frontend explicando o motivo (`status_detail` do Mercado Pago já vem com isso, tipo `cc_rejected_insufficient_amount`).
+4. Armazenar o `payment_id` do Mercado Pago junto do pedido, pra permitir consultar o status depois.
+
+### Webhook (recomendado, mas pode ficar pra uma segunda etapa)
+
+PIX e boleto não confirmam na hora — o Mercado Pago notifica de forma assíncrona quando o pagamento é efetivado. O ideal é ter um endpoint tipo `POST /webhooks/mercadopago` configurado no painel do Mercado Pago pra atualizar o status do pedido automaticamente quando isso acontecer. Se não der pra fazer agora, o pedido pode nascer como `status: pendente` e ser conferido manualmente por enquanto — mas registrar isso como próximo passo.
+
+### Fora de escopo (por enquanto)
+
+- Reembolsos/estornos via API — não é necessário nesse primeiro momento.
+- Pagamento recorrente/assinatura — não se aplica a este e-commerce.
+
+## 4) Critérios de Aceite (Given/When/Then)
+
+1. Given um pagamento por PIX é enviado com dados válidos, When `POST /pedidos` processa, Then o pedido é criado com status refletindo `pending`/`in_process` do Mercado Pago, e o `payment_id` fica salvo.
+2. Given um pagamento por cartão é aprovado pelo Mercado Pago, When `POST /pedidos` processa, Then o pedido é criado com status de pago.
+3. Given um pagamento por cartão é rejeitado (ex: saldo insuficiente, dados inválidos), When `POST /pedidos` processa, Then **nenhum pedido é criado** e a API retorna erro com o motivo da rejeição.
+4. Given o campo `pagamento` não é enviado (ex: fluxo antigo/teste), When `POST /pedidos` processa, Then o comportamento atual (sem cobrança) é mantido — não deve quebrar nada que já funciona.
+
+## 5) Definição de Pronto (DoD)
+
+- [ ] Access Token do Mercado Pago configurado como variável de ambiente **no serviço do backend** (nunca commitado no código).
+- [ ] `POST /pedidos` chama a API de pagamentos do Mercado Pago server-side quando `pagamento` é enviado.
+- [ ] Pedido só é criado se o pagamento for aceito/pendente (nunca se for rejeitado).
+- [ ] `payment_id` do Mercado Pago é salvo junto do pedido.
+- [ ] Testado com pelo menos PIX e cartão de crédito (usando as credenciais de teste `TEST-...`, que simulam aprovação/rejeição conforme [dados de teste do Mercado Pago](https://www.mercadopago.com/developers/en/docs/checkout-bricks/additional-content/test-cards)).
+- [ ] (Recomendado) Webhook pra atualizar status de PIX/boleto automaticamente.
+
+## 6) Aviso para o Frontend (quando pronto)
+
+Nenhuma mudança de código necessária — o frontend já está enviando o `pagamento` completo em todo `POST /pedidos`. Só precisa avisar quando o backend estiver processando de verdade, pra gente testar o fluxo ponta a ponta com as credenciais de teste.
