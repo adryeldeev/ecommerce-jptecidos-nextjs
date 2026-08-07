@@ -1,6 +1,12 @@
 import { SITE_URL } from './site';
 import type { Product } from '@/lib/types';
 
+// Impede que um campo com "</script>" (ex: título/descrição de produto vindos do backend)
+// feche a tag <script> e injete HTML/JS arbitrário na página.
+export function jsonLdToScript(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
 export function generateLocalBusinessJsonLd() {
   return {
     '@context': 'https://schema.org',

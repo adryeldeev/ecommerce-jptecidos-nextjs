@@ -5,6 +5,7 @@ import { ProductVariantSelector } from './product-variant-selector';
 import { ProductQuantitySelector } from './product-quantity-selector';
 import { useCart } from '@/features/cart/application/use-cart';
 import { useState } from 'react';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -184,7 +185,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         {activeTab === 'descricao' && (
           <div className="text-gray-600">
             {product.descricao ? (
-              <div dangerouslySetInnerHTML={{ __html: product.descricao }} />
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.descricao) }} />
             ) : (
               <p>Sem descrição disponível.</p>
             )}
@@ -204,7 +205,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             {product.observacoes && (
               <div>
                 <p className="font-medium mb-1">Observações:</p>
-                <div dangerouslySetInnerHTML={{ __html: product.observacoes }} />
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.observacoes) }} />
               </div>
             )}
             {!product.pesoGramas && !product.dimensaoAlturaCm && !product.observacoes && (

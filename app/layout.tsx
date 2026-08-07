@@ -3,7 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { QueryClientProvider } from "@/lib/providers/query-provider";
 import { WhatsAppButton } from "@/features/catalog/presentation/components/whatsapp-button";
-import { generateLocalBusinessJsonLd } from "@/lib/seo/json-ld";
+import { generateLocalBusinessJsonLd, jsonLdToScript } from "@/lib/seo/json-ld";
 import { SITE_URL } from "@/lib/seo/site";
 
 const inter = Inter({
@@ -59,7 +59,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdToScript(localBusinessJsonLd) }}
         />
         <QueryClientProvider>
           <div className="pt-16">

@@ -4,7 +4,7 @@ import { ProductImageGallery } from '@/features/catalog/presentation/components/
 import { ProductDetailClient } from '@/features/catalog/presentation/components/product-detail-client';
 import { RelatedProducts } from '@/features/catalog/presentation/components/related-products';
 import { productApi } from '@/features/catalog/infrastructure/product-api';
-import { generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo/json-ld';
+import { generateProductJsonLd, generateBreadcrumbJsonLd, jsonLdToScript } from '@/lib/seo/json-ld';
 import { Product } from '@/lib/types';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -77,11 +77,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToScript(productJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdToScript(breadcrumbJsonLd) }}
       />
 
       <div className="flex flex-col min-h-screen">
