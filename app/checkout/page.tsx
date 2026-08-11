@@ -59,7 +59,12 @@ export default function CheckoutPage() {
   const handleAddressSubmit = async (data: AddressFormData) => {
     freightMutation.mutate({
       cep: data.cep,
-      subtotal: cart.subtotal,
+      itens: cart.itens
+        .filter((item) => item.produtoVariacaoId)
+        .map((item) => ({
+          produtoVariacaoId: item.produtoVariacaoId as string,
+          quantidade: item.quantidade,
+        })),
     });
   };
 

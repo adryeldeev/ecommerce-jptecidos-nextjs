@@ -95,11 +95,15 @@ export interface Address {
   estado: string;
 }
 
+export interface FreightQuoteItem {
+  produtoVariacaoId: string;
+  quantidade: string;
+}
+
 export interface FreightQuoteRequest {
   cep: string;
-  subtotal: string;
+  itens: FreightQuoteItem[];
   metodo?: string;
-  estado?: string;
 }
 
 export interface FreightOption {
