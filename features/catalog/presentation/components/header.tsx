@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/features/account/application/use-auth';
@@ -44,9 +45,14 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">
-            <span className={`text-xl font-bold ${shouldShowScrolled ? 'text-gray-900' : 'text-white'}`}>
-              JP Tecidos
-            </span>
+            <Image
+              src={shouldShowScrolled ? '/jptecidos-dark.webp' : '/jptecidos-light.webp'}
+              alt="JP Tecidos"
+              width={202}
+              height={42}
+              priority
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
