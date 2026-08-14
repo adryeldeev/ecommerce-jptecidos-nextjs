@@ -9,9 +9,27 @@ import { authApi } from '@/features/account/infrastructure/auth-api';
 import { setAuthToken } from '@/lib/api/client';
 import { useAuth } from '@/features/account/application/use-auth';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <Footer />
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+function LoginContent() {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/minha-conta/meus-pedidos';
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +50,7 @@ export default function LoginPage() {
       setAuthToken(response.accessToken);
       useAuth.getState().setUser(response.usuario);
 
-      window.location.assign('/minha-conta/meus-pedidos');
+      window.location.assign(redirectTo);
     } catch (err) {
       setError('Email ou senha inválidos');
     } finally {

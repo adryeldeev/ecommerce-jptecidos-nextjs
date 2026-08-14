@@ -12,11 +12,14 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { type AddressFormData } from '@/lib/validations/address';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import type { FreightOption } from '@/lib/types';
+import { useAuth } from '@/features/account/application/use-auth';
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart } = useCart();
+  const { isAuthenticated } = useAuth();
   const [selectedFreight, setSelectedFreight] = useState<FreightOption | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -24,6 +27,7 @@ export default function CheckoutPage() {
   const { data: addresses = [] } = useQuery({
     queryKey: ['addresses'],
     queryFn: () => addressApi.list(),
+    enabled: isAuthenticated,
   });
 
   const freightMutation = useMutation({
@@ -49,6 +53,31 @@ export default function CheckoutPage() {
             <p className="text-gray-600 mb-8">
               Seu carrinho está vazio
             </p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1 py-12">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-3xl font-playfair font-normal text-gray-900 mb-4">
+              Checkout
+            </h1>
+            <p className="text-gray-600 mb-8">
+              Faça login para continuar com a compra.
+            </p>
+            <Link
+              href="/minha-conta/login?redirect=/checkout"
+              className="inline-block bg-[#f5a623] text-white px-6 py-3 rounded-md font-semibold hover:bg-[#e0961f] transition-colors"
+            >
+              Fazer Login
+            </Link>
           </div>
         </main>
         <Footer />
